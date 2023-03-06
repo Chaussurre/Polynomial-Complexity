@@ -21,6 +21,7 @@ public class MapSelectionManager : MonoBehaviour
 
     void CheckHover(Vector2 mousePos)
     {
+        Hovered = null;
         foreach (var selector in Tiles)
             if (selector != Selected && selector.isOverMe(mousePos))
             {

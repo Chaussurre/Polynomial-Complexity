@@ -308,6 +308,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TopRenderer: {fileID: 7332685102676593212}
   BorderRenderer: {fileID: 8475734071534296828}
+  TweenDuration: 0.2
+  TweenEase: 3
   DefaultSize: 1.125
   SizeWhenHovered: 1
   SizeWhenSelected: 1.25
