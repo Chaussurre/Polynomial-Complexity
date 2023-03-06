@@ -7,28 +7,29 @@ namespace CombatSystem.Map
 {
     public class MapView : MonoBehaviour
     {
-        private Map map;
-        private Vector3 LeftDownCorner; //The corner from which we draw tiles
+        private BattleMap BattleMap;
+        private Vector3 LeftUpCorner; //The corner from which we draw tiles
         
         [SerializeField] private Vector2 TileSize;
         [SerializeField] private float Slope;
 
-        public void Initialize(Map map)
+        public void Initialize(BattleMap battleMap)
         {
-            this.map = map;
+            BattleMap = battleMap;
             
-            //Set LeftDownCorner
+            //Set LeftUpCorner
             {
-                var y = -(map.Size[1] - 1) / 2.0f;
-                var x = -(map.Size[0] - 1) / 2.0f;
-                LeftDownCorner = new Vector3(x * TileSize.x  + Slope * y, y * TileSize.y);
+                var y = (battleMap.Size[1] - 1) / 2.0f;
+                var x = -(battleMap.Size[0] - 1) / 2.0f;
+                LeftUpCorner = new Vector3(x * TileSize.x  + Slope * y, y * TileSize.y);
             }
             
-            for (int i = 0; i < map.Tiles.Count; i++)
+            for (int i = 0; i < battleMap.Tiles.Count; i++)
             {
-                var tile = map.Tiles[i];
-                var pos = map.DeltaToPos(i);
-                tile.SetPos(new Vector3(pos.x * TileSize.x + Slope * pos.y, pos.y * TileSize.y) + LeftDownCorner);
+                var tile = battleMap.Tiles[i];
+                var pos = battleMap.DeltaToPos(i);
+                tile.Initialize(new Vector3(pos.x * TileSize.x + Slope * -pos.y, -pos.y * TileSize.y) + LeftUpCorner,
+                    i);
             }
         }
     }

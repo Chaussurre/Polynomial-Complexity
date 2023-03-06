@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
+using Codice.Client.BaseCommands;
 using UnityEngine;
 
 namespace CombatSystem.Map
@@ -12,11 +14,11 @@ namespace CombatSystem.Map
     public class Tile : MonoBehaviour
     {
         public TileType Type;
-        public SpriteRenderer Renderer;
+        [SerializeField] private TileView TileView;
 
-        public void SetPos(Vector3 position)
+        public void Initialize(Vector3 position, int delta)
         {
-            Renderer.sortingOrder = Mathf.FloorToInt(-position.y * 100);
+            TileView.Initialize(delta);
             transform.position = position;
         }
     }

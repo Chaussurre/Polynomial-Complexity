@@ -1,21 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CombatSystem.Map;
 
-namespace CombatSystem
+namespace CombatSystem.Selection
 {
     public class TileSelector : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField] private TileView TileView;
         
+        public Collider2D Collider;
+        public BattleMap BattleMap { get; set; }
+        
+        private void Start()
+        {
+            BattleMap = GetComponentInParent<BattleMap>();
         }
 
-        // Update is called once per frame
-        void Update()
+        public bool isOverMe(Vector2 pos)
         {
-        
+            return Collider.OverlapPoint(pos);
+        }
+
+        public void Hover()
+        {
+            TileView.Hover();
+        }
+
+        public void UnHover()
+        {
+            TileView.ResetSizeAndColor();
+        }
+
+        public void Select()
+        {
+            TileView.Select();
+        }
+
+        public void Unselect()
+        {
+            TileView.ResetSizeAndColor();
         }
     }
 }

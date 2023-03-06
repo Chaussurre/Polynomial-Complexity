@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CombatSystem.Map
 {
-    public class Map : MonoBehaviour
+    public class BattleMap : MonoBehaviour
     {
         private MapView View;
         
@@ -13,7 +13,7 @@ namespace CombatSystem.Map
         public readonly List<Tile> Tiles = new();
         public Tile TilePrefab;
         
-        private void Start()
+        private void Awake()
         {
             View = GetComponent<MapView>();
             

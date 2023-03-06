@@ -244,6 +244,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2092760135495101620, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2092760135495101620, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -288,19 +292,11 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5714945618605386541, guid: 86205e0533408d147950685f195f538a, type: 3}
-      propertyPath: TileSize.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714945618605386541, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: TileSize.y
-      value: 0.125
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6463917566560310015, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: Size.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463917566560310015, guid: 86205e0533408d147950685f195f538a, type: 3}
-      propertyPath: Size.y
       value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []

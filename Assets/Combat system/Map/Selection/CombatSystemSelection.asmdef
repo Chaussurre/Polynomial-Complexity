@@ -1,3 +1,16 @@
 {
-	"name": "CombatSystemSelection"
+    "name": "CombatSystemSelection",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c944f40ec642fdb4eaddcbc06e68102b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
