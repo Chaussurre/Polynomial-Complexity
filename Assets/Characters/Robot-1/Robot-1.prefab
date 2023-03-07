@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1970609314878114552, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: Speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970609314878114552, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: MovementFilter
       value: 
       objectReference: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}

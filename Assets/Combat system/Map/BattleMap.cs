@@ -75,6 +75,9 @@ namespace CombatSystem.Map
 
         public int PosToDelta(Vector2Int pos)
         {
+            if (pos.x < 0 || pos.x >= Size[0] || pos.y < 0 || pos.y >= Size[1])
+                return -1;
+            
             return pos.y * Size[0] + pos.x;
         }
 

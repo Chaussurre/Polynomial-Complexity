@@ -11,9 +11,13 @@ namespace CombatSystem.Entities
         private CombatEntity Entity;
         public SelectionLayerFilter MovementFilter;
 
+        public int Speed;
+        public int RemainingMoves { get; set; }
+
         private void Start()
         {
             Entity = GetComponent<CombatEntity>();
+            
         }
 
         public void Move(Vector2Int position, MapSelectionManager MapSelection)

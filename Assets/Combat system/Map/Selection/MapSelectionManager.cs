@@ -14,18 +14,12 @@ struct SelectionLayer
     public SelectionLayerFilter Filter;
     public Action<Vector2Int, MapSelectionManager> OnSelected;
 
-    public SelectionLayer(BattleMap Map, 
+    public SelectionLayer(MapSelectionManager Map, 
         Vector2Int Origin, 
         SelectionLayerFilter Filter, 
         Action<Vector2Int, MapSelectionManager> OnSelected)
     {
         Positions = new();
-        for (int i = 0; i < Map.Tiles.Count; i++)
-        {
-            var pos = Map.DeltaToPos(i);
-            if(Filter.Filter(Map, Origin, pos))
-                Positions.Add(pos);
-        }
 
         this.Origin = Origin;
         this.Filter = Filter;
@@ -42,9 +36,14 @@ public class MapSelectionManager : MonoBehaviour
 
     private readonly Stack<SelectionLayer> SelectionLayers = new();
 
+    public List<int> PreviousVector;
+
     private void Start()
     {
         Tiles.AddRange(GetComponentsInChildren<TileSelector>());
+        PreviousVector = new(Tiles.Count);
+        for (int i = 0; i < Tiles.Count; i++)
+            PreviousVector.Add(-1);
     }
 
     public Vector2Int GetSelectorPos(TileSelector selector)
@@ -55,21 +54,88 @@ public class MapSelectionManager : MonoBehaviour
     public void AddSelectionLayer(Vector2Int Origin, SelectionLayerFilter Filter, 
         Action<Vector2Int, MapSelectionManager> OnSelected)
     {
-        SelectionLayers.Push(new SelectionLayer(BattleMap, Origin, Filter, OnSelected));
+        SelectionLayers.Push(new SelectionLayer(this, Origin, Filter, OnSelected));
         
         ApplySelectionFilter();
     }
 
     void ApplySelectionFilter()
     {
-        for(int i = 0; i < Tiles.Count; i++)
+        var layer = SelectionLayers.Last(); 
+        layer.Positions.Clear();
+        
+        if (layer.Filter.IsContinuous)
+            ApplySelectionFilterContinuous();
+        else
+            ApplySelectionFilterNonContinuous();
+    }
+
+    void ApplySelectionFilterNonContinuous()
+    {
+        for (int i = 0; i < Tiles.Count; i++)
+            ApplyFilterToDelta(i);
+    }
+
+    void ApplySelectionFilterContinuous()
+    {
+        for (int i = 0; i < PreviousVector.Count; i++) 
+            PreviousVector[i] = -1;
+
+
+        Dictionary<int, int> Visible = new(PreviousVector.Count);
+        Dictionary<int, int> NextVisible = new(PreviousVector.Count);
+        var deltaOrigin = BattleMap.PosToDelta(SelectionLayers.Last().Origin);
+        Visible.Add(deltaOrigin, deltaOrigin);
+
+        while (Visible.Count > 0)
         {
-            var pos = BattleMap.DeltaToPos(i);
-            var layer = SelectionLayers.Last();
-            Tiles[i].SetState(layer.Filter.Filter(BattleMap, layer.Origin, pos) 
-                ? TileSelectorState.OnLayer
-                : TileSelectorState.OffLayer);
+            NextVisible.Clear();
+            foreach (var pair in Visible)
+            {
+                var prev = pair.Value;
+                var current = pair.Key;
+                
+                if(PreviousVector[current] != -1)
+                    continue;
+                
+                PreviousVector[current] = prev;
+
+                if (!ApplyFilterToDelta(current) && current != deltaOrigin)
+                    continue;
+                
+                var pos = BattleMap.DeltaToPos(current);
+                for(int i = 0; i < 4; i++)
+                {
+                    var x = i % 2 == 0? i - 1 : 0;
+                    var y = i % 2 == 0? 0 : i - 2;
+
+                    var next = BattleMap.PosToDelta(pos + new Vector2Int(x, y));
+                    
+                    if(next == -1)
+                        continue;
+                    
+                    if (!Visible.ContainsKey(next))
+                        NextVisible[next] = current;
+                }
+            }
+            Visible.Clear();
+            foreach (var pair in NextVisible)
+                Visible.Add(pair.Key, pair.Value);
         }
+        
+        for(int i = 0; i < PreviousVector.Count; i++)
+            if(PreviousVector[i] == -1)
+                Tiles[i].SetState(TileSelectorState.OffLayer);
+    }
+
+    bool ApplyFilterToDelta(int delta)
+    {
+        var pos = BattleMap.DeltaToPos(delta);
+        var layer = SelectionLayers.Last();
+        var isFiltered = layer.Filter.Filter(this, layer.Origin, pos);
+        if (isFiltered) layer.Positions.Add(pos);
+        Tiles[delta].SetState(isFiltered ? TileSelectorState.OnLayer : TileSelectorState.OffLayer);
+        return isFiltered;
     }
 
     void CheckHover(Vector2 mousePos)

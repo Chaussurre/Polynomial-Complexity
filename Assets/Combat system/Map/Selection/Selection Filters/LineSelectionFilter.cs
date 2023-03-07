@@ -10,7 +10,7 @@ namespace CombatSystem.Selection
     {
         public int Distance;
         
-        protected override bool FilterTile(BattleMap Map, Vector2Int Origin, Vector2Int Tile)
+        protected override bool FilterTile(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile)
         {
             return (Origin.x == Tile.x || Origin.y == Tile.y) &&
                  Mathf.Abs(Origin.x + Origin.y - Tile.x - Tile.y) <= Distance;

@@ -25,14 +25,17 @@ public abstract class SelectionLayerFilter : ScriptableObject
 {
     [SerializeField] private CombatEntityFilter CombatEntityFilter;
     [SerializeField] private ContainItselfFilter ContainItselfFilter;
-    public bool Filter(BattleMap Map, Vector2Int Origin, Vector2Int Tile)
+    public bool IsContinuous;
+    [SerializeField] protected bool useSpeed;
+
+    public bool Filter(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile)
     {
         if (Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
             return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
         
         if (FilterTile(Map, Origin, Tile))
         {
-            var hasEntity = Map.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
+            var hasEntity = Map.BattleMap.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
             switch (CombatEntityFilter)
             {
                 case CombatEntityFilter.IsEmpty:
@@ -49,5 +52,5 @@ public abstract class SelectionLayerFilter : ScriptableObject
         return false;
     }
 
-    protected abstract bool FilterTile(BattleMap Map, Vector2Int Origin, Vector2Int Tile);
+    protected abstract bool FilterTile(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile);
 }
