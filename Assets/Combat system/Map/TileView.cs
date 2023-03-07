@@ -11,20 +11,17 @@ namespace CombatSystem.Map
         public SpriteRenderer TopRenderer;
         public SpriteRenderer BorderRenderer;
 
-        public CombatEntity CombatEntity;
+        [HideInInspector] public CombatEntity CombatEntity;
         
         [SerializeField] private float TweenDuration;
         [SerializeField] private Ease TweenEase;
         
-        [SerializeField] private float DefaultSize;
-        [SerializeField] private float SizeWhenHovered;
-        [SerializeField] private float SizeWhenSelected;
-        
-        [SerializeField] private Color DefaultColor = Color.white;
-        [SerializeField] private Color ColorWhenHovered = Color.white;
-        [SerializeField] private Color ColorWhenSelected = Color.white;
+        private float DefaultSize;
+        private Color DefaultColor = Color.white;
         void Start()
         {
+            DefaultColor = TopRenderer.color;
+            DefaultSize = BorderRenderer.size.y;
             ResetSizeAndColor();
         }
 
@@ -34,25 +31,13 @@ namespace CombatSystem.Map
             BorderRenderer.sortingOrder = sortingOrder;
         }
 
-        public void Hover()
-        {
-            SetSpriteSize(SizeWhenHovered);
-            SetSpriteColor(ColorWhenHovered);
-        }
-
-        public void Select()
-        {
-            SetSpriteSize(SizeWhenSelected);
-            SetSpriteColor(ColorWhenSelected);
-        }
-
         public void ResetSizeAndColor()
         {
             SetSpriteSize(DefaultSize);
             SetSpriteColor(DefaultColor);
         }
 
-        void SetSpriteSize(float size)
+        public void SetSpriteSize(float size)
         {
             TopRenderer.transform.DOKill();
             TopRenderer.transform.DOLocalMove(Vector3.up * size, TweenDuration)
@@ -65,18 +50,33 @@ namespace CombatSystem.Map
             });
         }
 
+        public void SetSpriteColor(Color color)
+        {
+            TopRenderer.color = color;
+        }
+
+        public void InfluenceSpriteSize(float size)
+        {
+            SetSpriteSize(DefaultSize + size);
+        }
+
+        public void InfluenceSpriteColor(Color color)
+        {
+            SetSpriteColor(DefaultColor * color);
+        }
+
+        public void LerpSpriteColor(Color color)
+        {
+            SetSpriteColor(Color.Lerp(DefaultColor , color, 0.5f));
+        }
+
         public void RefreshCombatEntity()
         {
-            if (CombatEntity != null)
+            if (CombatEntity)
             {
                 CombatEntity.transform.position = TopRenderer.transform.position;
                 CombatEntity.SpriteRenderer.sortingOrder = TopRenderer.sortingOrder;
             }
-        }
-
-        void SetSpriteColor(Color color)
-        {
-            TopRenderer.color = color;
         }
     }
 }

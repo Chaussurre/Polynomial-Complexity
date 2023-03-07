@@ -7,21 +7,37 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1970609314878114552, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: MovementFilter
+      value: 
+      objectReference: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
     - target: {fileID: 1971730414804033289, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c1287812245211b4dafb70cc07c982a8, type: 3}
     - target: {fileID: 3156287875151375416, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3156287875151375416, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3156287875151375416, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c1287812245211b4dafb70cc07c982a8, type: 3}
+      objectReference: {fileID: 7873530285152588172, guid: 3ead10d5621d18748b61e35c0e2723bc, type: 3}
     - target: {fileID: 8064128505941844352, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_Name
-      value: Goblin
+      value: Robot-1
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_LocalPosition.x
@@ -65,3 +81,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+--- !u!1 &6289823397372604304 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8257313328127735727, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+  m_PrefabInstance: {fileID: 2728670887769495615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7467860406050748886
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6289823397372604304}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9082e48fe9e61f04ba97cd23c4f6c990, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

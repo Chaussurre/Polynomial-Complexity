@@ -9,5 +9,7 @@ namespace CombatSystem.Entities
         public SpriteRenderer SpriteRenderer;
         
         public HealthStatus HealthStatus;
+
+        public MovementManager MovementManager;
     }
 }

@@ -23,7 +23,8 @@ namespace CombatSystem.Map
         public readonly List<Tile> Tiles = new();
         public Tile TilePrefab;
 
-        public Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
+        public readonly Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
+        public readonly Dictionary<Vector2Int, CombatEntity> CombatEntitiesPos = new();
 
         private void Awake()
         {
@@ -51,11 +52,16 @@ namespace CombatSystem.Map
 
         public void MoveCombatEntity(CombatEntity entity, Vector2Int position)
         {
-            if (CombatEntities.ContainsValue(position))
+            if (CombatEntitiesPos.ContainsKey(position))
                 return;
-            
+
             GetEntityTile(entity)?.RemoveCombatEntity();
+            
+            if (CombatEntities.TryGetValue(entity, out var oldPos))
+                CombatEntitiesPos.Remove(oldPos);
+            
             CombatEntities[entity] = position;
+            CombatEntitiesPos[position] = entity;
             GetEntityTile(entity).AddCombatEntity(entity);
         }
 

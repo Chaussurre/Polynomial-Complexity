@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: HealthStatus
       value: 
       objectReference: {fileID: 2768786101591937273}
+    - target: {fileID: 6848678980060057181, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
+      propertyPath: MovementManager
+      value: 
+      objectReference: {fileID: 1970609314878114552}
     - target: {fileID: 6879274143095493297, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
       propertyPath: m_Name
       value: Character
@@ -87,3 +91,16 @@ MonoBehaviour:
     OnEvent:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1970609314878114552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8064128505941844352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d443cc73ba2a59d4ea63cbe51e133bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementFilter: {fileID: 0}
