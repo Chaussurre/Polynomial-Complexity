@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using Codice.Client.BaseCommands;
+using CombatSystem.Entities;
 using UnityEngine;
 
 namespace CombatSystem.Map
@@ -20,6 +21,17 @@ namespace CombatSystem.Map
         {
             TileView.Initialize(delta);
             transform.position = position;
+        }
+
+        public void AddCombatEntity(CombatEntity entity)
+        {
+            TileView.CombatEntity = entity;
+            TileView.RefreshCombatEntity();
+        }
+
+        public void RemoveCombatEntity()
+        {
+            TileView.CombatEntity = null;
         }
     }
 }

@@ -1,8 +1,8 @@
 {
-    "name": "CombatSystemMap",
-    "rootNamespace": "CombatSystem.Map",
+    "name": "CombatSystemEvents",
+    "rootNamespace": "CombatSystem.Events",
     "references": [
-        "GUID:82fdadfc5253e8244a4f523c4d73a8af"
+        "GUID:30817c1a0e6d646d99c048fc403f5979"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
