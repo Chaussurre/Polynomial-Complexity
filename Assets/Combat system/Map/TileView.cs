@@ -27,8 +27,8 @@ namespace CombatSystem.Map
 
         public void Initialize(int sortingOrder)
         {
-            TopRenderer.sortingOrder = sortingOrder;
-            BorderRenderer.sortingOrder = sortingOrder;
+            TopRenderer.sortingOrder = sortingOrder * 2;
+            BorderRenderer.sortingOrder = sortingOrder * 2;
         }
 
         public void ResetSizeAndColor()
@@ -75,7 +75,7 @@ namespace CombatSystem.Map
             if (CombatEntity)
             {
                 CombatEntity.transform.position = TopRenderer.transform.position;
-                CombatEntity.SpriteRenderer.sortingOrder = TopRenderer.sortingOrder;
+                CombatEntity.SpriteRenderer.sortingOrder = TopRenderer.sortingOrder + 1;
             }
         }
     }

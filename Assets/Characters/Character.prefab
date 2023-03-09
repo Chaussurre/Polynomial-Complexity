@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5431252299408980101, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
@@ -64,12 +65,27 @@ PrefabInstance:
       value: Character
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
 --- !u!1 &8064128505941844352 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6879274143095493297, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
   m_PrefabInstance: {fileID: 3499751301103711025}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1970609314878114552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8064128505941844352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d443cc73ba2a59d4ea63cbe51e133bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementFilter: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
+  Speed: 3
 --- !u!114 &2768786101591937273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,16 +107,3 @@ MonoBehaviour:
     OnEvent:
       m_PersistentCalls:
         m_Calls: []
---- !u!114 &1970609314878114552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8064128505941844352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d443cc73ba2a59d4ea63cbe51e133bc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MovementFilter: {fileID: 0}

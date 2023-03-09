@@ -8,12 +8,10 @@ namespace CombatSystem.Selection
     [CreateAssetMenu(fileName = "Line Selection Filter", menuName = "Combat System/Selection Filter/Line", order = 998)]
     public class LineSelectionFilter : SelectionLayerFilter
     {
-        public int Distance;
-        
-        protected override bool FilterTile(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile)
+        protected override bool FilterTile(SelectionLayer Layer, Vector2Int Tile)
         {
-            return (Origin.x == Tile.x || Origin.y == Tile.y) &&
-                 Mathf.Abs(Origin.x + Origin.y - Tile.x - Tile.y) <= Distance;
+            return (Layer.Origin.x == Tile.x || Layer.Origin.y == Tile.y) &&
+                 Mathf.Abs(Layer.Origin.x + Layer.Origin.y - Tile.x - Tile.y) <= Layer.Size;
         }
     }
 }

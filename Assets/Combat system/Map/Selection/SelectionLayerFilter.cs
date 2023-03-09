@@ -5,52 +5,59 @@ using CombatSystem.Entities;
 using CombatSystem.Map;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "Selection Layer", menuName = "Battle System/Selection Layer", order = 1000)]
 
-enum CombatEntityFilter
+namespace CombatSystem.Selection
 {
-    NoFilter,
-    IsEmpty,
-    HasEntity,
-    HasTargetable,
-}
-enum ContainItselfFilter
-{
-    NoFilter,
-    AlwaysContainItself,
-    NeverContainItself,
-}
-
-public abstract class SelectionLayerFilter : ScriptableObject
-{
-    [SerializeField] private CombatEntityFilter CombatEntityFilter;
-    [SerializeField] private ContainItselfFilter ContainItselfFilter;
-    public bool IsContinuous;
-    [SerializeField] protected bool useSpeed;
-
-    public bool Filter(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile)
+    enum CombatEntityFilter
     {
-        if (Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
-            return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
-        
-        if (FilterTile(Map, Origin, Tile))
-        {
-            var hasEntity = Map.BattleMap.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
-            switch (CombatEntityFilter)
-            {
-                case CombatEntityFilter.IsEmpty:
-                    return !hasEntity && FilterTile(Map, Origin, Tile);
-                case CombatEntityFilter.HasEntity:
-                    return hasEntity && FilterTile(Map, Origin, Tile);
-                case CombatEntityFilter.HasTargetable:
-                    return hasEntity && combatEntity.HealthStatus && Filter(Map, Origin, Tile);
-                default:
-                    return FilterTile(Map, Origin, Tile);
-            }
-        }
-
-        return false;
+        NoFilter,
+        IsEmpty,
+        HasEntity,
+        HasTargetable,
     }
 
-    protected abstract bool FilterTile(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile);
+    enum ContainItselfFilter
+    {
+        NoFilter,
+        AlwaysContainItself,
+        NeverContainItself,
+    }
+
+    public abstract class SelectionLayerFilter : ScriptableObject
+    {
+        [SerializeField] private CombatEntityFilter CombatEntityFilter;
+        [SerializeField] private ContainItselfFilter ContainItselfFilter;
+        public bool NeedPath;
+        public bool UseSpeed;
+        public int DefaultSpeed;
+
+        public virtual bool AllowReChoice => false;
+
+        public bool Filter(SelectionLayer Layer, Vector2Int Tile)
+        {
+            if (Layer.Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
+                return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
+
+            if (FilterTile(Layer, Tile))
+            {
+                var hasEntity = Layer.Map.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
+                switch (CombatEntityFilter)
+                {
+                    case CombatEntityFilter.IsEmpty:
+                        return !hasEntity;
+                    case CombatEntityFilter.HasEntity:
+                        return hasEntity;
+                    case CombatEntityFilter.HasTargetable:
+                        return hasEntity && combatEntity.HealthStatus;
+                    default:
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected abstract bool FilterTile(SelectionLayer Layer, Vector2Int Tile);
+        
+    }
 }

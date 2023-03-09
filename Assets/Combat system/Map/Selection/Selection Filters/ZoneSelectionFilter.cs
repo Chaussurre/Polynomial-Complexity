@@ -8,36 +8,28 @@ namespace CombatSystem.Selection
     [CreateAssetMenu(fileName = "Zone Selection Filter", menuName = "Combat System/Selection Filter/Zone", order = 999)]
     public class ZoneSelectionFilter : SelectionLayerFilter
     {
-        public bool NeedPath;
         public bool SquareZone;
-        public int ZoneRadius;
 
+        public override bool AllowReChoice => NeedPath;
 
-        protected override bool FilterTile(MapSelectionManager Map, Vector2Int Origin, Vector2Int Tile)
+        protected override bool FilterTile(SelectionLayer Layer, Vector2Int Tile)
         {
-            var dist = SquareZone ? SquareDistance(Tile, Origin) : CircleDistance(Tile, Origin, Map);
+            var dist = SquareZone 
+                ? SquareDistance(Tile, Layer.Origin)
+                : CircleDistance(Tile, Layer.Origin, Layer);
 
-            return dist <= ZoneRadius;
+            return dist <= Layer.Size;
         }
 
-        int CircleDistance(Vector2Int pos, Vector2Int Origin, MapSelectionManager Map)
+        int CircleDistance(Vector2Int pos, Vector2Int Origin, SelectionLayer Layer)
         {
-            if (!IsContinuous || !NeedPath)
+            if (!NeedPath)
             {
                 var delta = pos - Origin;
                 return Mathf.Abs(delta.x) + Mathf.Abs(delta.y);
             }
-            
-            int count = 0;
-            int current = Map.BattleMap.PosToDelta(pos);
-            int prev = Map.PreviousVector[current];
-            while (current != prev)
-            {
-                current = prev;
-                prev = Map.PreviousVector[prev];
-                count++;
-            }
-            return count;
+
+            return Layer.CountPath(pos);
         }
 
         int SquareDistance(Vector2Int Tile, Vector2Int Origin)
