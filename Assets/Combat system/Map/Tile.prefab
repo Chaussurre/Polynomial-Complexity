@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1, y: 1.125}
+  m_Size: {x: 1, y: 0.625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2407800192631331099}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.125, z: 0}
+  m_LocalPosition: {x: 0, y: 0.625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,7 +161,7 @@ SpriteRenderer:
   m_Color: {r: 0.041906644, g: 0.94509804, b: 0.031372547, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 1
+  m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -192,7 +192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3886458726277921395}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: 0, y: -0.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -245,7 +245,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.875}
+  m_Offset: {x: 0, y: 0.375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -258,9 +258,10 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.25}
-      - {x: -0.5, y: -0.25}
-      - {x: 0, y: -0.25}
+      - {x: -0.5, y: 0}
+      - {x: 0, y: 0}
       - {x: 0.5, y: 0.25}
+  m_UseDelaunayMesh: 0
 --- !u!1 &7490350448448941311
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,11 +327,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileView: {fileID: 6822572106352762569}
   OnLayerColor: {r: 1, g: 1, b: 1, a: 1}
-  OnLayerSize: 0.125
+  OnLayerSize: 0.1
   OffLayerColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-  OffLayerSize: -0.125
+  OffLayerSize: -0.1
   HoveredColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
-  HoveredSize: -0.125
+  HoveredSize: -0.1
+  HalfHoveredColor: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
+  HalfHoveredSize: 0
+  PathColor: {r: 0.12549019, g: 0.18693496, b: 1, a: 1}
+  OnPath: 0
   Collider: {fileID: 3067081659053782022}
 --- !u!114 &6822572106352762569
 MonoBehaviour:

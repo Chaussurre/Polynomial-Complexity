@@ -10,7 +10,7 @@ namespace CombatSystem.Selection
     {
         public bool SquareZone;
 
-        public override bool AllowReChoice => NeedPath;
+        public override bool AllowReChoice => NeedPath && !SquareZone;
 
         protected override bool FilterTile(SelectionLayer Layer, Vector2Int Tile)
         {

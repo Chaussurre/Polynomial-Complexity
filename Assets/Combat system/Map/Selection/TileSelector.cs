@@ -17,25 +17,26 @@ namespace CombatSystem.Selection
     public class TileSelector : MonoBehaviour
     {
         [SerializeField] private TileView TileView;
-        [Space] 
+        [Space]
         [SerializeField] private Color OnLayerColor = Color.white;
         [SerializeField] private float OnLayerSize;
-
+        [Space]
         [SerializeField] private Color OffLayerColor = Color.white;
         [SerializeField] private float OffLayerSize;
-        
+        [Space]
         [SerializeField] private Color HoveredColor = Color.white;
         [SerializeField] private float HoveredSize;
+        [Space]
+        [SerializeField] private Color HalfHoveredColor = Color.white;
+        [SerializeField] private float HalfHoveredSize;
+        [Space]
+        [SerializeField] private Color PathColor = Color.white;
+        
+        [HideInInspector] public bool OnPath;
         
         public Collider2D Collider;
-        public BattleMap BattleMap { get; set; }
 
         private TileSelectorState TileSelectorState = TileSelectorState.NoCurrentLayer;
-        
-        private void Start()
-        {
-            BattleMap = GetComponentInParent<BattleMap>();
-        }
 
         public bool isOverMe(Vector2 pos)
         {
@@ -45,7 +46,7 @@ namespace CombatSystem.Selection
         public void SetState(TileSelectorState state)
         {
             TileSelectorState = state;
-            UnHover();
+            Refresh();
         }
 
         public void Hover()
@@ -53,17 +54,23 @@ namespace CombatSystem.Selection
             if (TileSelectorState == TileSelectorState.OffLayer)
                 SetSizeColor(0, HoveredColor);
             else
-                //lerping when targeted
-                SetSizeColor(HoveredSize, HoveredColor, TileSelectorState == TileSelectorState.OnLayer); 
+                SetSizeColor(HoveredSize, HoveredColor); 
         }
 
-        public void UnHover()
+        public void HalfHover()
         {
-            //lerping when targeted
-            SetSizeColor(0, Color.white, TileSelectorState == TileSelectorState.OnLayer);
+            if (TileSelectorState == TileSelectorState.OffLayer)
+                SetSizeColor(0, HalfHoveredColor);
+            else
+                SetSizeColor(HalfHoveredSize, HalfHoveredColor);
         }
-        
-        void SetSizeColor(float Size, Color color, bool LerpColor = false)
+
+        public void Refresh()
+        {
+            SetSizeColor(0, Color.white);
+        }
+
+        private void SetSizeColor(float Size, Color color)
         {
             float defaultSize;
             Color defaultColor;
@@ -82,11 +89,12 @@ namespace CombatSystem.Selection
                     defaultColor = Color.white;
                     break;
             }
-
             
             TileView.InfluenceSpriteSize(defaultSize + Size);
             
-            if (LerpColor)
+            if (OnPath)
+                TileView.SetSpriteColor(PathColor);
+            else if (TileSelectorState == TileSelectorState.OnLayer)
                 TileView.LerpSpriteColor(color * defaultColor);
             else
                 TileView.InfluenceSpriteColor(color * defaultColor);

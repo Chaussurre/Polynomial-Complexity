@@ -45,8 +45,9 @@ namespace CombatSystem.Entities
             if (MovementFilter.AllowReChoice)
             {
                 GetPath(layer, delta);
+                Path.TryPop(out _);
                 
-                var movesDone = Path.Count - 1 - (MoveChoices.Count > 0 ? MoveChoices.Peek() : 0);
+                var movesDone = Path.Count - (MoveChoices.Count > 0 ? MoveChoices.Peek() : 0);
                 var movesLeft = layer.Size - movesDone;
                 
                 MoveChoices.Push(Path.Count);

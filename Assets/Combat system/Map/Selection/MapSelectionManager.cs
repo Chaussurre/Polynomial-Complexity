@@ -13,7 +13,8 @@ namespace CombatSystem.Selection
         public BattleMap BattleMap;
 
         public readonly List<TileSelector> Tiles = new();
-        public TileSelector Hovered { get; private set; }
+        public int Hovered { get; private set; } = -1;
+        public TileSelector HoveredTile => Hovered != -1? Tiles[Hovered] : null;
 
         private readonly Stack<SelectionLayer> SelectionLayers = new();
 
@@ -63,64 +64,111 @@ namespace CombatSystem.Selection
                 }
         }
 
+        void UnHover()
+        {
+            if (SelectionLayers.Count > 0)
+                foreach (var tile in LastLayer.Positions)
+                    Tiles[BattleMap.PosToDelta(tile)].OnPath = false;
+
+            var pos = BattleMap.DeltaToPos(Hovered);
+            for (int x = 0; x < BattleMap.Size[0]; x++)
+                Tiles[BattleMap.PosToDelta(new Vector2Int(x, pos.y))].Refresh();
+            for (int y = 0; y < BattleMap.Size[1]; y++)
+                Tiles[BattleMap.PosToDelta(new Vector2Int(pos.x, y))].Refresh();
+        }
+        
         void CheckHover(Vector2 mousePos)
         {
-            Hovered = null;
-            foreach (var selector in Tiles)
-                if (selector.isOverMe(mousePos))
+            var index = Tiles.FindIndex(selector => selector.isOverMe(mousePos));
+            Hovered = index;
+
+            if (index == -1) return;
+
+            var selector = Tiles[index];
+
+            var pos = BattleMap.DeltaToPos(index);
+            for (int x = 0; x < BattleMap.Size[0]; x++)
+                Tiles[BattleMap.PosToDelta(new Vector2Int(x, pos.y))].HalfHover();
+            for (int y = 0; y < BattleMap.Size[1]; y++)
+                Tiles[BattleMap.PosToDelta(new Vector2Int(pos.x, y))].HalfHover();
+            
+            if (SelectionLayers.Count > 0 && LastLayer.Filter.AllowReChoice && LastLayer.Positions.Contains(pos))
+            {
+                var previousVec = LastLayer.PreviousVector;
+                var delta = Hovered;
+                var originDelta = BattleMap.PosToDelta(LastLayer.Origin);
+                while (delta != originDelta)
                 {
-                    Hovered = selector;
-                    selector.Hover();
+                    Tiles[delta].OnPath = true;
+                    Tiles[delta].Refresh();
+                    delta = previousVec[delta];
                 }
+
+                Tiles[originDelta].OnPath = true;
+                Tiles[originDelta].Refresh();
+            }
+            
+            selector.Hover();
         }
 
         private void Update()
         {
-            var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            if (!Hovered)
+            var cam = Camera.main;
+            
+            if(!cam) return;
+            var mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            
+            if (Hovered == -1)
                 CheckHover(mousePos);
-            else if (!Hovered.isOverMe(mousePos))
+            else if (!HoveredTile.isOverMe(mousePos))
             {
-                Hovered.UnHover();
+                UnHover();
                 CheckHover(mousePos);
             }
 
             if (Input.GetMouseButtonDown(0))
-                Select();
+                Select(mousePos);
 
             if (Input.GetMouseButtonDown(1))
-                Cancel();
+                Cancel(mousePos);
         }
 
-        void Select()
+        void Select(Vector2 MousePos)
         {
             if (SelectionLayers.Count == 0)
             {
-                var pos = GetSelectorPos(Hovered);
+                var pos = GetSelectorPos(HoveredTile);
                 if (BattleMap.CombatEntitiesPos.TryGetValue(pos, out var entity))
                     entity.MovementManager?.SelectMove(this, pos);
             }
             else
             {
                 var layer = LastLayer;
-                var pos = GetSelectorPos(Hovered);
+                
+                foreach (var vec in layer.Positions) 
+                    Tiles[BattleMap.PosToDelta(vec)].OnPath = false;
+                
+                var pos = GetSelectorPos(HoveredTile);
                 if (layer.Positions.Contains(pos))
                     layer.OnSelected?.Invoke(pos, this);
             }
 
             //Put hovered tile back in hover mode
-            Hovered?.Hover();
+            CheckHover(MousePos);
         }
 
-        void Cancel()
+        void Cancel(Vector2 MousePos)
         {
-            if(SelectionLayers.TryPop(out var layer))
+            if (SelectionLayers.TryPop(out var layer))
+            {
+                foreach (var pos in layer.Positions) 
+                    Tiles[BattleMap.PosToDelta(pos)].OnPath = false;
                 layer.OnCancel?.Invoke(this);
+            }
             RefreshSelectionFilter();
 
             //Put hovered tile back in hover mode
-            Hovered?.Hover();
+            CheckHover(MousePos);
         }
     }
 }
