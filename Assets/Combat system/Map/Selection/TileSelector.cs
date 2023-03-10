@@ -29,10 +29,8 @@ namespace CombatSystem.Selection
         [Space]
         [SerializeField] private Color HalfHoveredColor = Color.white;
         [SerializeField] private float HalfHoveredSize;
-        [Space]
-        [SerializeField] private Color PathColor = Color.white;
         
-        [HideInInspector] public bool OnPath;
+        private Color? ForceColor = null;
         
         public Collider2D Collider;
 
@@ -49,6 +47,15 @@ namespace CombatSystem.Selection
             Refresh();
         }
 
+        public void SetColor(Color? color)
+        {
+            if (color != ForceColor)
+            {
+                ForceColor = color;
+                TileView.SetSpriteColor(color);
+            }
+        }
+        
         public void Hover()
         {
             if (TileSelectorState == TileSelectorState.OffLayer)
@@ -92,8 +99,9 @@ namespace CombatSystem.Selection
             
             TileView.InfluenceSpriteSize(defaultSize + Size);
             
-            if (OnPath)
-                TileView.SetSpriteColor(PathColor);
+            if (ForceColor.HasValue)
+                TileView.SetSpriteColor(ForceColor.Value);
+            
             else if (TileSelectorState == TileSelectorState.OnLayer)
                 TileView.LerpSpriteColor(color * defaultColor);
             else

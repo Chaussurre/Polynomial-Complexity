@@ -30,11 +30,6 @@ namespace CombatSystem.Entities
             SelectMoveWithSpeed(MapSelection, Position, moves);
         }
 
-        void SelectMoveWithSpeed(MapSelectionManager MapSelection, Vector2Int Position, int Moves)
-        {
-            MapSelection.AddSelectionLayer(Position, MovementFilter, OnSelect, OnCancel, Moves);
-        }
-
         public void OnSelect(Vector2Int position, MapSelectionManager MapSelection)
         {
             var map = MapSelection.BattleMap;
@@ -69,14 +64,6 @@ namespace CombatSystem.Entities
             }
         }
 
-        void FinishMove(MapSelectionManager MapSelection)
-        {
-            MoveChoices.Clear();
-            Path.Clear();
-            
-            MapSelection.EndStack();
-        }
-
         public void OnCancel(MapSelectionManager MapSelection)
         {
             if (Path.Count > 0)
@@ -90,6 +77,39 @@ namespace CombatSystem.Entities
                 var position = MapSelection.BattleMap.DeltaToPos(Path.Pop());
                 MapSelection.BattleMap.MoveCombatEntity(Entity, position);
             }
+        }
+
+        void SelectMoveWithSpeed(MapSelectionManager MapSelection, Vector2Int Position, int Moves)
+        {
+            MapSelection.AddSelectionLayer(Position, MovementFilter, OnSelect, OnCancel, Moves, Recolor);
+        }
+
+        void FinishMove(MapSelectionManager MapSelection)
+        {
+            MoveChoices.Clear();
+            Path.Clear();
+            
+            MapSelection.EndStack();
+        }
+
+        void Recolor(MapSelectionManager mapSelectionManager, Vector2Int Hovered)
+        {
+            var layer = mapSelectionManager.LastLayer;
+            var bMap = mapSelectionManager.BattleMap;
+
+            if (!layer.Positions.Contains(Hovered)) return;
+            
+            var delta = bMap.PosToDelta(Hovered);
+            var prev = layer.PreviousVector[delta];
+            do
+            {
+                mapSelectionManager.Tiles[delta].SetColor(Color.blue);
+
+                delta = prev;
+                prev = layer.PreviousVector[delta];
+            } while (delta != prev);
+
+            mapSelectionManager.Tiles[delta].SetColor(Color.blue);
         }
 
         private void GetPath(SelectionLayer Selection, int delta)

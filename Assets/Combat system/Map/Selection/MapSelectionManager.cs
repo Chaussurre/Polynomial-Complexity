@@ -36,9 +36,16 @@ namespace CombatSystem.Selection
         }
 
         public void AddSelectionLayer(Vector2Int Origin, SelectionLayerFilter Filter,
-            Action<Vector2Int, MapSelectionManager> OnSelected, Action<MapSelectionManager> OnCancel, int Size)
+            Action<Vector2Int, MapSelectionManager> OnSelected, Action<MapSelectionManager> OnCancel, int Size,
+            Action<MapSelectionManager, Vector2Int> ReColor = null)
         {
-            SelectionLayers.Push(new SelectionLayer(Origin, Filter, OnSelected, OnCancel, Size, BattleMap));
+            SelectionLayers.Push(new SelectionLayer(Origin, 
+                Filter, 
+                OnSelected, 
+                OnCancel, 
+                Size, 
+                BattleMap, 
+                ReColor));
 
             RefreshSelectionFilter();
         }
@@ -66,10 +73,11 @@ namespace CombatSystem.Selection
 
         void UnHover()
         {
-            if (SelectionLayers.Count > 0)
-                foreach (var tile in LastLayer.Positions)
-                    Tiles[BattleMap.PosToDelta(tile)].OnPath = false;
+            foreach (var tile in Tiles)
+                tile.SetColor(null);
 
+            if (Hovered == -1) return;
+            
             var pos = BattleMap.DeltaToPos(Hovered);
             for (int x = 0; x < BattleMap.Size[0]; x++)
                 Tiles[BattleMap.PosToDelta(new Vector2Int(x, pos.y))].Refresh();
@@ -79,35 +87,27 @@ namespace CombatSystem.Selection
         
         void CheckHover(Vector2 mousePos)
         {
+            UnHover();
+            
             var index = Tiles.FindIndex(selector => selector.isOverMe(mousePos));
             Hovered = index;
 
             if (index == -1) return;
+            
+            var pos = BattleMap.DeltaToPos(index);
+            
+            if (SelectionLayers.Count > 0)
+            {
+                var Layer = LastLayer;
+                Layer.OnHover?.Invoke(this, BattleMap.DeltaToPos(Hovered));
+            }
 
             var selector = Tiles[index];
 
-            var pos = BattleMap.DeltaToPos(index);
             for (int x = 0; x < BattleMap.Size[0]; x++)
                 Tiles[BattleMap.PosToDelta(new Vector2Int(x, pos.y))].HalfHover();
             for (int y = 0; y < BattleMap.Size[1]; y++)
                 Tiles[BattleMap.PosToDelta(new Vector2Int(pos.x, y))].HalfHover();
-            
-            if (SelectionLayers.Count > 0 && LastLayer.Filter.AllowReChoice && LastLayer.Positions.Contains(pos))
-            {
-                var previousVec = LastLayer.PreviousVector;
-                var delta = Hovered;
-                var originDelta = BattleMap.PosToDelta(LastLayer.Origin);
-                while (delta != originDelta)
-                {
-                    Tiles[delta].OnPath = true;
-                    Tiles[delta].Refresh();
-                    delta = previousVec[delta];
-                }
-
-                Tiles[originDelta].OnPath = true;
-                Tiles[originDelta].Refresh();
-            }
-            
             selector.Hover();
         }
 
@@ -118,13 +118,8 @@ namespace CombatSystem.Selection
             if(!cam) return;
             var mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
             
-            if (Hovered == -1)
+            if (Hovered == -1 || !HoveredTile.isOverMe(mousePos))
                 CheckHover(mousePos);
-            else if (!HoveredTile.isOverMe(mousePos))
-            {
-                UnHover();
-                CheckHover(mousePos);
-            }
 
             if (Input.GetMouseButtonDown(0))
                 Select(mousePos);
@@ -144,10 +139,7 @@ namespace CombatSystem.Selection
             else
             {
                 var layer = LastLayer;
-                
-                foreach (var vec in layer.Positions) 
-                    Tiles[BattleMap.PosToDelta(vec)].OnPath = false;
-                
+
                 var pos = GetSelectorPos(HoveredTile);
                 if (layer.Positions.Contains(pos))
                     layer.OnSelected?.Invoke(pos, this);
@@ -160,11 +152,8 @@ namespace CombatSystem.Selection
         void Cancel(Vector2 MousePos)
         {
             if (SelectionLayers.TryPop(out var layer))
-            {
-                foreach (var pos in layer.Positions) 
-                    Tiles[BattleMap.PosToDelta(pos)].OnPath = false;
                 layer.OnCancel?.Invoke(this);
-            }
+            
             RefreshSelectionFilter();
 
             //Put hovered tile back in hover mode

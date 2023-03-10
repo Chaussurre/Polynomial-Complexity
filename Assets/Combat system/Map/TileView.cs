@@ -50,9 +50,9 @@ namespace CombatSystem.Map
             });
         }
 
-        public void SetSpriteColor(Color color)
+        public void SetSpriteColor(Color? color)
         {
-            TopRenderer.color = color;
+            TopRenderer.color = color ?? DefaultColor;
         }
 
         public void InfluenceSpriteSize(float size)

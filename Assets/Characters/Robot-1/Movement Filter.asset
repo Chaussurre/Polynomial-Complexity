@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Movement Filter
   m_EditorClassIdentifier: 
   CombatEntityFilter: 1
+  EntityFilterOnlyBlock: 1
   ContainItselfFilter: 1
   NeedPath: 1
   UseSpeed: 1

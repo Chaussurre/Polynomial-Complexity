@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 using CombatSystem.Map;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace CombatSystem.Selection
         public SelectionLayerFilter Filter;
         public Action<Vector2Int, MapSelectionManager> OnSelected;
         public Action<MapSelectionManager> OnCancel;
+        public Action<MapSelectionManager, Vector2Int> OnHover;
         public int Size;
         public BattleMap Map;
 
@@ -22,7 +24,7 @@ namespace CombatSystem.Selection
             Action<Vector2Int, MapSelectionManager> OnSelected,
             Action<MapSelectionManager> OnCancel,
             int Size,
-            BattleMap Map)
+            BattleMap Map, Action<MapSelectionManager, Vector2Int> OnHover)
         {
             Positions = new();
             if (Filter.NeedPath)
@@ -36,6 +38,7 @@ namespace CombatSystem.Selection
             this.OnCancel = OnCancel;
             this.Size = Size;
             this.Map = Map;
+            this.OnHover = OnHover;
             
             ApplySelectionFilter();
         }
@@ -59,12 +62,12 @@ namespace CombatSystem.Selection
         private bool ApplyFilterToDelta(int delta)
         {
             var pos = Map.DeltaToPos(delta);
-            var result = Filter.Filter(this, pos);
+            var AddToPos = Filter.Filter(this, pos, out bool block);
 
-            if (result)
+            if (AddToPos)
                 Positions.Add(pos);
             
-            return result;
+            return !block;
         }
 
         void ApplySelectionFilterContinuous()
@@ -91,7 +94,7 @@ namespace CombatSystem.Selection
 
                     PreviousVector[current] = prev;
 
-                    if (!ApplyFilterToDelta(current) && current != deltaOrigin)
+                    if (!ApplyFilterToDelta(current))
                         continue;
                     
                     var pos = Map.DeltaToPos(current);

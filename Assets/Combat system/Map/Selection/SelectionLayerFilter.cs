@@ -26,6 +26,7 @@ namespace CombatSystem.Selection
     public abstract class SelectionLayerFilter : ScriptableObject
     {
         [SerializeField] private CombatEntityFilter CombatEntityFilter;
+        [SerializeField] private bool EntityFilterOnlyBlock;
         [SerializeField] private ContainItselfFilter ContainItselfFilter;
         public bool NeedPath;
         public bool UseSpeed;
@@ -33,28 +34,37 @@ namespace CombatSystem.Selection
 
         public virtual bool AllowReChoice => false;
 
-        public bool Filter(SelectionLayer Layer, Vector2Int Tile)
+        public bool Filter(SelectionLayer Layer, Vector2Int Tile, out bool BlockPath)
         {
             if (Layer.Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
-                return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
+            {
+                BlockPath = false;
 
-            if (FilterTile(Layer, Tile))
+                return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
+            }
+
+            BlockPath = !FilterTile(Layer, Tile);
+            if (!BlockPath)
             {
                 var hasEntity = Layer.Map.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
                 switch (CombatEntityFilter)
                 {
                     case CombatEntityFilter.IsEmpty:
-                        return !hasEntity;
+                        BlockPath = hasEntity;
+                        break;
                     case CombatEntityFilter.HasEntity:
-                        return hasEntity;
+                        BlockPath = !hasEntity;
+                        break;
                     case CombatEntityFilter.HasTargetable:
-                        return hasEntity && combatEntity.HealthStatus;
-                    default:
-                        return true;
+                        BlockPath = !hasEntity || !combatEntity.HealthStatus;
+                        break;
                 }
+
+                if (hasEntity && EntityFilterOnlyBlock)
+                    return true;
             }
 
-            return false;
+            return !BlockPath;
         }
 
         protected abstract bool FilterTile(SelectionLayer Layer, Vector2Int Tile);
