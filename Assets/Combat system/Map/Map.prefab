@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6463917566560310015}
   - component: {fileID: 5714945618605386541}
   - component: {fileID: 3852466088752615575}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BattleMap: {fileID: 6463917566560310015}
+  PreviousVector: 
 --- !u!1 &6833695667375193896
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +87,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6593201604232847677}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Entities
   m_TagString: Untagged
   m_Icon: {fileID: 0}

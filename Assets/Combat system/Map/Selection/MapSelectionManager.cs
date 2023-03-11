@@ -37,7 +37,7 @@ namespace CombatSystem.Selection
 
         public void AddSelectionLayer(Vector2Int Origin, SelectionLayerFilter Filter,
             Action<Vector2Int, MapSelectionManager> OnSelected, Action<MapSelectionManager> OnCancel, int Size,
-            Action<MapSelectionManager, Vector2Int> ReColor = null)
+            Action<MapSelectionManager, Vector2Int?> ReColor = null)
         {
             SelectionLayers.Push(new SelectionLayer(Origin, 
                 Filter, 
@@ -92,15 +92,15 @@ namespace CombatSystem.Selection
             var index = Tiles.FindIndex(selector => selector.isOverMe(mousePos));
             Hovered = index;
 
-            if (index == -1) return;
-            
-            var pos = BattleMap.DeltaToPos(index);
-            
             if (SelectionLayers.Count > 0)
             {
                 var Layer = LastLayer;
-                Layer.OnHover?.Invoke(this, BattleMap.DeltaToPos(Hovered));
+                Layer.OnHover?.Invoke(this, Hovered == -1 ? null :  BattleMap.DeltaToPos(Hovered));
             }
+            
+            if (index == -1) return;
+            
+            var pos = BattleMap.DeltaToPos(index);
 
             var selector = Tiles[index];
 
@@ -139,6 +139,8 @@ namespace CombatSystem.Selection
             else
             {
                 var layer = LastLayer;
+
+                foreach (var position in layer.Positions) Tiles[BattleMap.PosToDelta(position)].Refresh();
 
                 var pos = GetSelectorPos(HoveredTile);
                 if (layer.Positions.Contains(pos))

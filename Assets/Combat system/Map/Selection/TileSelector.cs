@@ -52,7 +52,10 @@ namespace CombatSystem.Selection
             if (color != ForceColor)
             {
                 ForceColor = color;
-                TileView.SetSpriteColor(color);
+                if (color.HasValue)
+                    TileView.SetSpriteColor(color.Value);
+                else
+                    Refresh();
             }
         }
         

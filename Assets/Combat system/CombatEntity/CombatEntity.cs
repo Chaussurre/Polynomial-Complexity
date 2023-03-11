@@ -6,7 +6,7 @@ namespace CombatSystem.Entities
 {
     public class CombatEntity : MonoBehaviour
     {
-        public SpriteRenderer SpriteRenderer;
+        public CombatEntityView View;
         
         public HealthStatus HealthStatus;
 

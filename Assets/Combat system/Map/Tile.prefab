@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1190793180506120431}
   - component: {fileID: 8475734071534296828}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Border Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1710569680315099164}
   - component: {fileID: 7332685102676593212}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2651035334615122299}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top Sprite Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5065503656680589237}
   - component: {fileID: 3067081659053782022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 2835062336170645093}
   - component: {fileID: 6341537930326242738}
   - component: {fileID: 6822572106352762569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,15 +327,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileView: {fileID: 6822572106352762569}
   OnLayerColor: {r: 1, g: 1, b: 1, a: 1}
-  OnLayerSize: 0.1
+  OnLayerSize: 0.05
   OffLayerColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
-  OffLayerSize: -0.1
+  OffLayerSize: -0.05
   HoveredColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
-  HoveredSize: 0.1
+  HoveredSize: 0.05
   HalfHoveredColor: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   HalfHoveredSize: 0
-  PathColor: {r: 0.12549019, g: 0.18693496, b: 1, a: 1}
-  OnPath: 0
   Collider: {fileID: 3067081659053782022}
 --- !u!114 &6822572106352762569
 MonoBehaviour:
@@ -353,4 +351,5 @@ MonoBehaviour:
   BorderRenderer: {fileID: 8475734071534296828}
   CombatEntity: {fileID: 0}
   TweenDuration: 0.2
+  TweenDelay: 0.1
   TweenEase: 3

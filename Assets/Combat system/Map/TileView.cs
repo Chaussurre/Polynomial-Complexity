@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using CombatSystem.Entities;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 
 namespace CombatSystem.Map
@@ -14,10 +16,14 @@ namespace CombatSystem.Map
         [HideInInspector] public CombatEntity CombatEntity;
         
         [SerializeField] private float TweenDuration;
+        [SerializeField] private float TweenDelay;
         [SerializeField] private Ease TweenEase;
         
         private float DefaultSize;
         private Color DefaultColor = Color.white;
+
+        //private TweenerCore<Vector3, Vector3, VectorOptions> Tween = null;
+
         void Start()
         {
             DefaultColor = TopRenderer.color;
@@ -27,8 +33,8 @@ namespace CombatSystem.Map
 
         public void Initialize(int sortingOrder)
         {
-            TopRenderer.sortingOrder = sortingOrder * 2;
-            BorderRenderer.sortingOrder = sortingOrder * 2;
+            TopRenderer.sortingOrder = sortingOrder * 10;
+            BorderRenderer.sortingOrder = sortingOrder * 10;
         }
 
         public void ResetSizeAndColor()
@@ -40,19 +46,22 @@ namespace CombatSystem.Map
         public void SetSpriteSize(float size)
         {
             TopRenderer.transform.DOKill();
-            TopRenderer.transform.DOLocalMove(Vector3.up * size, TweenDuration)
+            //var newTween = TopRenderer.transform
+            TopRenderer.transform
+                .DOLocalMove(Vector3.up * size, TweenDuration)
+                .SetDelay(TweenDelay)
                 .SetEase(TweenEase)
                 .OnUpdate(() =>
-            {
-                BorderRenderer.size = new Vector2(1, TopRenderer.transform.localPosition.y);
-                
-                RefreshCombatEntity();
-            });
+                {
+                    BorderRenderer.size = new Vector2(1, TopRenderer.transform.localPosition.y);
+
+                    RefreshCombatEntity();
+                });
         }
 
-        public void SetSpriteColor(Color? color)
+        public void SetSpriteColor(Color color)
         {
-            TopRenderer.color = color ?? DefaultColor;
+            TopRenderer.color = color;
         }
 
         public void InfluenceSpriteSize(float size)
@@ -75,7 +84,7 @@ namespace CombatSystem.Map
             if (CombatEntity)
             {
                 CombatEntity.transform.position = TopRenderer.transform.position;
-                CombatEntity.SpriteRenderer.sortingOrder = TopRenderer.sortingOrder + 1;
+                CombatEntity.View.SetOrdering(TopRenderer.sortingOrder + 9);
             }
         }
     }

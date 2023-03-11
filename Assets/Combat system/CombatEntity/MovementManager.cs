@@ -14,6 +14,9 @@ namespace CombatSystem.Entities
 
         public int Speed;
         public int RemainingMoves { get; protected set; }
+        
+        [SerializeField] private Color NextPathColor = Color.white;
+        [SerializeField] private Color PreviousPathColor = Color.white;
 
         private Stack<int> Path = new();
         private Stack<int> MoveChoices = new();
@@ -92,18 +95,20 @@ namespace CombatSystem.Entities
             MapSelection.EndStack();
         }
 
-        void Recolor(MapSelectionManager mapSelectionManager, Vector2Int Hovered)
+        void Recolor(MapSelectionManager mapSelectionManager, Vector2Int? Hovered)
         {
             var layer = mapSelectionManager.LastLayer;
             var bMap = mapSelectionManager.BattleMap;
 
-            if (!layer.Positions.Contains(Hovered)) return;
+            foreach (var tileDelta in Path) mapSelectionManager.Tiles[tileDelta].SetColor(PreviousPathColor);
+
+            if (!Hovered.HasValue || !layer.Positions.Contains(Hovered.Value)) return;
             
-            var delta = bMap.PosToDelta(Hovered);
+            var delta = bMap.PosToDelta(Hovered.Value);
             var prev = layer.PreviousVector[delta];
             do
             {
-                mapSelectionManager.Tiles[delta].SetColor(Color.blue);
+                mapSelectionManager.Tiles[delta].SetColor(NextPathColor);
 
                 delta = prev;
                 prev = layer.PreviousVector[delta];

@@ -15,7 +15,7 @@ namespace CombatSystem.Selection
         public SelectionLayerFilter Filter;
         public Action<Vector2Int, MapSelectionManager> OnSelected;
         public Action<MapSelectionManager> OnCancel;
-        public Action<MapSelectionManager, Vector2Int> OnHover;
+        public Action<MapSelectionManager, Vector2Int?> OnHover;
         public int Size;
         public BattleMap Map;
 
@@ -24,7 +24,7 @@ namespace CombatSystem.Selection
             Action<Vector2Int, MapSelectionManager> OnSelected,
             Action<MapSelectionManager> OnCancel,
             int Size,
-            BattleMap Map, Action<MapSelectionManager, Vector2Int> OnHover)
+            BattleMap Map, Action<MapSelectionManager, Vector2Int?> OnHover)
         {
             Positions = new();
             if (Filter.NeedPath)
