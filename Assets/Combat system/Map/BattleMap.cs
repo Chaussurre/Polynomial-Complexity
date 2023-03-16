@@ -2,12 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CombatSystem.Entities;
+using CombatSystem.Selection;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CombatSystem.Map
 {
     public class BattleMap : MonoBehaviour
     {
+        #region Events
+
+        public static UnityEvent<CombatEntity, Vector2Int> MoveEntity = new();
+
+        #endregion
+        
+        private static BattleMap ActiveMap = null;
+        
         [Serializable]
         public struct InitCombatEntity
         {
@@ -17,18 +27,22 @@ namespace CombatSystem.Map
 
         public List<InitCombatEntity> InitializeCombatEntities = new();
         
-        private MapView View;
+        private readonly List<Tile> tiles = new();
+        public static List<Tile> Tiles => ActiveMap.tiles;
         
-        public Vector2Int Size;
-        public readonly List<Tile> Tiles = new();
-        public Tile TilePrefab;
+        [SerializeField] private Vector2Int size;
+        public static Vector2Int Size => ActiveMap.size;
+        
+        [SerializeField] private Tile TilePrefab;
 
         public readonly Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
         public readonly Dictionary<Vector2Int, CombatEntity> CombatEntitiesPos = new();
 
         private void Awake()
         {
-            View = GetComponent<MapView>();
+            ActiveMap = this;
+            
+            MoveEntity.AddListener(MoveCombatEntity);
             
             if (!TilePrefab)
             {
@@ -37,20 +51,19 @@ namespace CombatSystem.Map
             }
             
             
-            for(int x = 0; x < Size[0]; x++)
-            for (int y = 0; y < Size[1]; y++)
+            for(int x = 0; x < size[0]; x++)
+            for (int y = 0; y < size[1]; y++)
             {
                 var tile = Instantiate(TilePrefab, transform);
-                Tiles.Add(tile);
+                tiles.Add(tile);
             }
             
-            View?.Initialize(this);
 
             foreach (var entity in InitializeCombatEntities) 
                 MoveCombatEntity(entity.Entity, entity.Position);
         }
 
-        public void MoveCombatEntity(CombatEntity entity, Vector2Int position)
+        private void MoveCombatEntity(CombatEntity entity, Vector2Int position)
         {
             if (CombatEntitiesPos.ContainsKey(position))
                 return;
@@ -65,24 +78,34 @@ namespace CombatSystem.Map
             GetEntityTile(entity).AddCombatEntity(entity);
         }
 
-        public Tile GetEntityTile(CombatEntity entity)
+        public static bool HasEntity(Vector2Int position, out CombatEntity entity)
         {
-            if (!CombatEntities.ContainsKey(entity))
+            return ActiveMap.CombatEntitiesPos.TryGetValue(position, out entity);
+        }
+        
+        public static Tile GetEntityTile(CombatEntity entity)
+        {
+            if (!ActiveMap) return null;
+            
+            if (!ActiveMap.CombatEntities.ContainsKey(entity))
                 return null;
             
-            return Tiles[PosToDelta(CombatEntities[entity])];
+            return Tiles[PosToDelta(ActiveMap.CombatEntities[entity])];
         }
 
-        public int PosToDelta(Vector2Int pos)
+        public static int PosToDelta(Vector2Int pos)
         {
+            var Size = ActiveMap.size;
             if (pos.x < 0 || pos.x >= Size[0] || pos.y < 0 || pos.y >= Size[1])
                 return -1;
             
             return pos.y * Size[0] + pos.x;
         }
 
-        public Vector2Int DeltaToPos(int delta)
+        public static Vector2Int DeltaToPos(int delta)
         {
+            var Size = ActiveMap.size;
+            
             var x = delta % Size[0];
             var y = delta / Size[0];
 

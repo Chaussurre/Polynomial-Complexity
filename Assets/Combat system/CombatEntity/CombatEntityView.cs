@@ -12,5 +12,14 @@ namespace CombatSystem.Entities
         {
             foreach (var spriteRenderer in SpriteRenderers) spriteRenderer.sortingOrder = order--;
         }
+
+        public virtual void SetAlpha(float alpha)
+        {
+            foreach (var renderer in SpriteRenderers)
+            {
+                var color = renderer.color;
+                renderer.color = new Color(color.r, color.g, color.b, alpha);
+            }
+        }
     }
 }

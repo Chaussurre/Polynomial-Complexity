@@ -13,36 +13,34 @@ namespace CombatSystem.Selection
         
         public Vector2Int Origin;
         public SelectionLayerFilter Filter;
-        public Action<Vector2Int, MapSelectionManager> OnSelected;
-        public Action<MapSelectionManager> OnCancel;
-        public Action<MapSelectionManager, Vector2Int?> OnHover;
+        private Action<SelectionLayer, Vector2Int> OnSelected;
+        private Action<SelectionLayer> OnCancel;
+        private Action<SelectionLayer, Vector2Int?> OnHover;
         public int Size;
-        public BattleMap Map;
 
         public SelectionLayer(Vector2Int Origin,
             SelectionLayerFilter Filter,
-            Action<Vector2Int, MapSelectionManager> OnSelected,
-            Action<MapSelectionManager> OnCancel,
-            int Size,
-            BattleMap Map, Action<MapSelectionManager, Vector2Int?> OnHover)
+            Action<SelectionLayer, Vector2Int> OnSelected,
+            Action<SelectionLayer> OnCancel,
+            Action<SelectionLayer, Vector2Int?> OnHover,
+            int Size)
         {
             Positions = new();
             if (Filter.NeedPath)
                 PreviousVector = new();
             else
                 PreviousVector = null;
-            
+
             this.Origin = Origin;
             this.Filter = Filter;
             this.OnSelected = OnSelected;
             this.OnCancel = OnCancel;
             this.Size = Size;
-            this.Map = Map;
             this.OnHover = OnHover;
-            
+
             ApplySelectionFilter();
         }
-        
+
         void ApplySelectionFilter()
         {
             Positions.Clear();
@@ -55,13 +53,13 @@ namespace CombatSystem.Selection
 
         void ApplySelectionFilterNonContinuous()
         {
-            for (int i = 0; i < Map.Tiles.Count; i++)
+            for (int i = 0; i < BattleMap.Tiles.Count; i++)
                 ApplyFilterToDelta(i);
         }
 
         private bool ApplyFilterToDelta(int delta)
         {
-            var pos = Map.DeltaToPos(delta);
+            var pos = BattleMap.DeltaToPos(delta);
             var AddToPos = Filter.Filter(this, pos, out bool block);
 
             if (AddToPos)
@@ -72,13 +70,13 @@ namespace CombatSystem.Selection
 
         void ApplySelectionFilterContinuous()
         {
-            for (int i = 0; i < Map.Tiles.Count; i++)
+            for (int i = 0; i < BattleMap.Tiles.Count; i++)
                 PreviousVector.Add(-1);
 
 
             Dictionary<int, int> Visible = new(PreviousVector.Count);
             Dictionary<int, int> NextVisible = new(PreviousVector.Count);
-            var deltaOrigin = Map.PosToDelta(Origin);
+            var deltaOrigin = BattleMap.PosToDelta(Origin);
             Visible.Add(deltaOrigin, deltaOrigin);
 
             while (Visible.Count > 0)
@@ -97,14 +95,14 @@ namespace CombatSystem.Selection
                     if (!ApplyFilterToDelta(current))
                         continue;
                     
-                    var pos = Map.DeltaToPos(current);
+                    var pos = BattleMap.DeltaToPos(current);
 
                     for (int i = 0; i < 4; i++)
                     {
                         var x = i % 2 == 0 ? i - 1 : 0;
                         var y = i % 2 == 0 ? 0 : i - 2;
 
-                        var next = Map.PosToDelta(pos + new Vector2Int(x, y));
+                        var next = BattleMap.PosToDelta(pos + new Vector2Int(x, y));
 
                         if (next == -1)
                             continue;
@@ -122,7 +120,7 @@ namespace CombatSystem.Selection
         public int CountPath(Vector2Int position)
         {
             int count = 0;
-            int current = Map.PosToDelta(position);
+            int current = BattleMap.PosToDelta(position);
             int prev = PreviousVector[current];
             while (current != prev)
             {
@@ -132,5 +130,9 @@ namespace CombatSystem.Selection
             }
             return count;
         }
+
+        public void Select(Vector2Int Position) => OnSelected?.Invoke(this, Position);
+        public void Cancel() => OnCancel?.Invoke(this);
+        public void Hover(Vector2Int? Position) => OnHover?.Invoke(this, Position);
     }
 }

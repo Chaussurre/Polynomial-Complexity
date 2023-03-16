@@ -1,21 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Principal;
-using Codice.Client.BaseCommands;
 using CombatSystem.Entities;
+using CombatSystem.Selection;
 using UnityEngine;
 
 namespace CombatSystem.Map
 {
-    public enum TileType
-    {
-        Grass,
-    }
     
     public class Tile : MonoBehaviour
     {
-        public TileType Type;
-        [SerializeField] private TileView TileView;
+        public TileView TileView;
+        public TileSelector TileSelector;
 
         public void Initialize(Vector3 position, int delta)
         {

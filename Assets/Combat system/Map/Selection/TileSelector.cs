@@ -110,5 +110,7 @@ namespace CombatSystem.Selection
             else
                 TileView.InfluenceSpriteColor(color * defaultColor);
         }
+
+        public void SetEntityTransparent(bool value) => TileView.SetTransparent(value);
     }
 }

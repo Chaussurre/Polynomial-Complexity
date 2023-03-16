@@ -46,7 +46,7 @@ namespace CombatSystem.Selection
             BlockPath = !FilterTile(Layer, Tile);
             if (!BlockPath)
             {
-                var hasEntity = Layer.Map.CombatEntitiesPos.TryGetValue(Tile, out var combatEntity);
+                var hasEntity = BattleMap.HasEntity(Tile, out var combatEntity);
                 switch (CombatEntityFilter)
                 {
                     case CombatEntityFilter.IsEmpty:

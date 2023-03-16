@@ -27,47 +27,46 @@ namespace CombatSystem.Entities
             RemainingMoves = Speed;
         }
 
-        public void SelectMove(MapSelectionManager MapSelection, Vector2Int Position)
+        public void SelectMove(Vector2Int Position)
         {
             int moves = MovementFilter.UseSpeed ? RemainingMoves : MovementFilter.DefaultSpeed;
-            SelectMoveWithSpeed(MapSelection, Position, moves);
+            
+            SelectMoveWithSpeed(Position, moves);
         }
 
-        public void OnSelect(Vector2Int position, MapSelectionManager MapSelection)
+        public void OnSelect(SelectionLayer Layer, Vector2Int position)
         {
-            var map = MapSelection.BattleMap;
-            map.MoveCombatEntity(Entity, position);
-            var delta = map.PosToDelta(position);
-            var layer = MapSelection.LastLayer;
+            BattleMap.MoveEntity?.Invoke(Entity, position);
+            var delta = BattleMap.PosToDelta(position);
 
             if (MovementFilter.AllowReChoice)
             {
-                GetPath(layer, delta);
+                GetPath(Layer, delta);
                 Path.TryPop(out _);
                 
                 var movesDone = Path.Count - (MoveChoices.Count > 0 ? MoveChoices.Peek() : 0);
-                var movesLeft = layer.Size - movesDone;
+                var movesLeft = Layer.Size - movesDone;
                 
                 MoveChoices.Push(Path.Count);
 
                 if (movesDone <= 0)
-                    FinishMove(MapSelection);
+                    FinishMove();
                 else
-                    SelectMoveWithSpeed(MapSelection, position, movesLeft);
+                    SelectMoveWithSpeed(position, movesLeft);
             }
             else
             {
-                Path.Push(map.PosToDelta(layer.Origin));
+                Path.Push(BattleMap.PosToDelta(Layer.Origin));
                 
                 MoveChoices.Push(Path.Count);
-                if (layer.Origin == position)
-                    FinishMove(MapSelection);
+                if (Layer.Origin == position)
+                    FinishMove();
                 else
-                    SelectMoveWithSpeed(MapSelection, position, 0);
+                    SelectMoveWithSpeed(position, 0);
             }
         }
 
-        public void OnCancel(MapSelectionManager MapSelection)
+        public void OnCancel(SelectionLayer Layer)
         {
             if (Path.Count > 0)
             {
@@ -77,44 +76,50 @@ namespace CombatSystem.Entities
                 while (Path.Count > lastChoice + 1)
                     Path.Pop();
 
-                var position = MapSelection.BattleMap.DeltaToPos(Path.Pop());
-                MapSelection.BattleMap.MoveCombatEntity(Entity, position);
+                var position = BattleMap.DeltaToPos(Path.Pop());
+                BattleMap.MoveEntity?.Invoke(Entity, position);
             }
         }
 
-        void SelectMoveWithSpeed(MapSelectionManager MapSelection, Vector2Int Position, int Moves)
+        void OnHover(SelectionLayer Layer, Vector2Int? Hovered)
         {
-            MapSelection.AddSelectionLayer(Position, MovementFilter, OnSelect, OnCancel, Moves, Recolor);
+            var Tiles = BattleMap.Tiles;
+
+            foreach (var tileDelta in Path) Tiles[tileDelta].TileSelector.SetColor(PreviousPathColor);
+
+            if (!Hovered.HasValue || !Layer.Positions.Contains(Hovered.Value)) return;
+            
+            var delta = BattleMap.PosToDelta(Hovered.Value);
+            var prev = Layer.PreviousVector[delta];
+            do
+            {
+                Tiles[delta].TileSelector.SetColor(NextPathColor);
+
+                delta = prev;
+                prev = Layer.PreviousVector[delta];
+            } while (delta != prev);
+
+            Tiles[delta].TileSelector.SetColor(Color.blue);
         }
 
-        void FinishMove(MapSelectionManager MapSelection)
+        void SelectMoveWithSpeed(Vector2Int Position, int Moves)
+        {
+            SelectionStackManager.AddLayer?.Invoke(new SelectionLayer(
+                Position, 
+                MovementFilter, 
+                OnSelect, 
+                OnCancel, 
+                OnHover,
+                Moves));
+            //SelectionStackManager.AddLayer(Position, MovementFilter, OnSelect, OnCancel, Moves, OnHover);
+        }
+
+        void FinishMove()
         {
             MoveChoices.Clear();
             Path.Clear();
             
-            MapSelection.EndStack();
-        }
-
-        void Recolor(MapSelectionManager mapSelectionManager, Vector2Int? Hovered)
-        {
-            var layer = mapSelectionManager.LastLayer;
-            var bMap = mapSelectionManager.BattleMap;
-
-            foreach (var tileDelta in Path) mapSelectionManager.Tiles[tileDelta].SetColor(PreviousPathColor);
-
-            if (!Hovered.HasValue || !layer.Positions.Contains(Hovered.Value)) return;
-            
-            var delta = bMap.PosToDelta(Hovered.Value);
-            var prev = layer.PreviousVector[delta];
-            do
-            {
-                mapSelectionManager.Tiles[delta].SetColor(NextPathColor);
-
-                delta = prev;
-                prev = layer.PreviousVector[delta];
-            } while (delta != prev);
-
-            mapSelectionManager.Tiles[delta].SetColor(Color.blue);
+            SelectionStackManager.ClearStack?.Invoke();
         }
 
         private void GetPath(SelectionLayer Selection, int delta)

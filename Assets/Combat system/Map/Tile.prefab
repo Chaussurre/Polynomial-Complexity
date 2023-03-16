@@ -311,8 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999416004e8d03947a8cb1cbba9c1c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
   TileView: {fileID: 6822572106352762569}
+  TileSelector: {fileID: 6341537930326242738}
 --- !u!114 &6341537930326242738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,3 +353,4 @@ MonoBehaviour:
   TweenDuration: 0.2
   TweenDelay: 0.1
   TweenEase: 3
+  EntityAlphaLower: 0.5

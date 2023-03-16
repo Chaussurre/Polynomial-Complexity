@@ -14,13 +14,17 @@ namespace CombatSystem.Map
         public SpriteRenderer BorderRenderer;
 
         [HideInInspector] public CombatEntity CombatEntity;
-        
+        [Space]
         [SerializeField] private float TweenDuration;
         [SerializeField] private float TweenDelay;
         [SerializeField] private Ease TweenEase;
         
+        
         private float DefaultSize;
         private Color DefaultColor = Color.white;
+        [Space]
+        [SerializeField] private float EntityAlphaLower = 0.5f;
+        private bool entityIsTransparent;
 
         //private TweenerCore<Vector3, Vector3, VectorOptions> Tween = null;
 
@@ -85,7 +89,15 @@ namespace CombatSystem.Map
             {
                 CombatEntity.transform.position = TopRenderer.transform.position;
                 CombatEntity.View.SetOrdering(TopRenderer.sortingOrder + 9);
+                
+                CombatEntity.View.SetAlpha(entityIsTransparent ? EntityAlphaLower : 1f);
             }
+        }
+
+        public void SetTransparent(bool value)
+        {
+            entityIsTransparent = value;
+            RefreshCombatEntity();
         }
     }
 }

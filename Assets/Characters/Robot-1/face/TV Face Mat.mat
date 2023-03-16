@@ -41,17 +41,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Deformation: 0.3
+    - _Deformation: 0.7
+    - _DeformationCenter: 0.1
     - _Intensity: 1
     - _Line_Density: 1
-    - _Line_Speed: 0.3
+    - _Line_Speed: 2
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Treshold: 0.5
     m_Colors:
     - _Background_Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Line_Color: {r: 0.76792455, g: 0.8519518, b: 1, a: 1}
-    - _Tiling: {r: 0.01, g: 5, b: 0, a: 0}
+    - _Line_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+    - _Tiling: {r: 0.1, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2185108875294799745
 MonoBehaviour:
