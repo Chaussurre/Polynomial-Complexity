@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace CombatSystem.Selection
 {
-    [CreateAssetMenu(fileName = "Global Selection Filter", menuName = "Combat System/Selection Filter/Global", order = 1000)]
+    [CreateAssetMenu(fileName = "Global Selection Filter", menuName = "Combat System/Selection Filter/Global")]
     public class GlobalSelectionFilter : SelectionLayerFilter
     {
-        protected override bool FilterTile(SelectionLayer _, Vector2Int ___)
+        protected override bool FilterTile(SelectionTile _, Vector2Int ___)
         {
             return true;
         }

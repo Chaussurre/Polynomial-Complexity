@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.MemoryMappedFiles;
 using CombatSystem.Map;
 using UnityEngine;
 
 namespace CombatSystem.Selection
 {
-    public struct SelectionLayer
+    public class SelectionTile : SelectionLayer
     {
         public List<Vector2Int> Positions;
         public List<int> PreviousVector;
         
         public Vector2Int Origin;
-        public SelectionLayerFilter Filter;
-        private Action<SelectionLayer, Vector2Int> OnSelected;
-        private Action<SelectionLayer> OnCancel;
-        private Action<SelectionLayer, Vector2Int?> OnHover;
-        public int Size;
+        
+        public readonly SelectionLayerFilter Filter;
+        private readonly Action<SelectionTile, Vector2Int> OnSelected;
+        private readonly Action<SelectionTile> OnCancel;
+        private readonly Action<SelectionTile, Vector2Int?> OnHover;
+        public readonly int Size;
 
-        public SelectionLayer(Vector2Int Origin,
+        public SelectionTile(Vector2Int Origin,
             SelectionLayerFilter Filter,
-            Action<SelectionLayer, Vector2Int> OnSelected,
-            Action<SelectionLayer> OnCancel,
-            Action<SelectionLayer, Vector2Int?> OnHover,
+            Action<SelectionTile, Vector2Int> OnSelected,
+            Action<SelectionTile> OnCancel,
+            Action<SelectionTile, Vector2Int?> OnHover,
             int Size)
         {
             Positions = new();
@@ -72,8 +72,7 @@ namespace CombatSystem.Selection
         {
             for (int i = 0; i < BattleMap.Tiles.Count; i++)
                 PreviousVector.Add(-1);
-
-
+            
             Dictionary<int, int> Visible = new(PreviousVector.Count);
             Dictionary<int, int> NextVisible = new(PreviousVector.Count);
             var deltaOrigin = BattleMap.PosToDelta(Origin);

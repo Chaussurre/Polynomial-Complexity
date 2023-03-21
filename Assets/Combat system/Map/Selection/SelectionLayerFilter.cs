@@ -29,24 +29,23 @@ namespace CombatSystem.Selection
         [SerializeField] private bool EntityFilterOnlyBlock;
         [SerializeField] private ContainItselfFilter ContainItselfFilter;
         public bool NeedPath;
-        public bool UseSpeed;
-        public int DefaultSpeed;
 
         public virtual bool AllowReChoice => false;
 
-        public bool Filter(SelectionLayer Layer, Vector2Int Tile, out bool BlockPath)
+        public bool Filter(SelectionTile tile, Vector2Int Tile, out bool BlockPath)
         {
-            if (Layer.Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
+            if (tile.Origin == Tile && ContainItselfFilter != ContainItselfFilter.NoFilter)
             {
                 BlockPath = false;
 
                 return ContainItselfFilter == ContainItselfFilter.AlwaysContainItself;
             }
 
-            BlockPath = !FilterTile(Layer, Tile);
+            BlockPath = !FilterTile(tile, Tile);
             if (!BlockPath)
             {
-                var hasEntity = BattleMap.HasEntity(Tile, out var combatEntity);
+                var hasEntity = BattleMap.CountEntity(Tile) > 0;
+                
                 switch (CombatEntityFilter)
                 {
                     case CombatEntityFilter.IsEmpty:
@@ -56,7 +55,8 @@ namespace CombatSystem.Selection
                         BlockPath = !hasEntity;
                         break;
                     case CombatEntityFilter.HasTargetable:
-                        BlockPath = !hasEntity || !combatEntity.HealthStatus;
+                        var TargetableEntity = BattleMap.GetEntities(Tile).Any(x => x.HealthStatus);
+                        BlockPath = !hasEntity || !TargetableEntity;
                         break;
                 }
 
@@ -67,7 +67,7 @@ namespace CombatSystem.Selection
             return !BlockPath;
         }
 
-        protected abstract bool FilterTile(SelectionLayer Layer, Vector2Int Tile);
+        protected abstract bool FilterTile(SelectionTile tile, Vector2Int Tile);
         
     }
 }

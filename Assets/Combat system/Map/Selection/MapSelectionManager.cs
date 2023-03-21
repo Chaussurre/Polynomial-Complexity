@@ -136,10 +136,8 @@ namespace CombatSystem.Selection
 
         private void OnTrySelectEntity(Vector2Int position)
         {
-            if (BattleMap.HasEntity(position, out var entity))
-            {
-                entity.MovementManager.SelectMove(position);
-            }
+            BattleMap.GetEntities(position)
+                .FirstOrDefault(x => x.Select(position));
         }
     }
 }

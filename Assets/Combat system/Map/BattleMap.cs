@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CombatSystem.Entities;
 using CombatSystem.Selection;
 using UnityEngine;
@@ -36,7 +37,6 @@ namespace CombatSystem.Map
         [SerializeField] private Tile TilePrefab;
 
         public readonly Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
-        public readonly Dictionary<Vector2Int, CombatEntity> CombatEntitiesPos = new();
 
         private void Awake()
         {
@@ -65,22 +65,21 @@ namespace CombatSystem.Map
 
         private void MoveCombatEntity(CombatEntity entity, Vector2Int position)
         {
-            if (CombatEntitiesPos.ContainsKey(position))
-                return;
-
             GetEntityTile(entity)?.RemoveCombatEntity();
-            
-            if (CombatEntities.TryGetValue(entity, out var oldPos))
-                CombatEntitiesPos.Remove(oldPos);
-            
             CombatEntities[entity] = position;
-            CombatEntitiesPos[position] = entity;
             GetEntityTile(entity).AddCombatEntity(entity);
         }
 
-        public static bool HasEntity(Vector2Int position, out CombatEntity entity)
+        public static int CountEntity(Vector2Int position)
         {
-            return ActiveMap.CombatEntitiesPos.TryGetValue(position, out entity);
+            return ActiveMap.CombatEntities.Count(x => x.Value == position);
+        }
+
+        public static IEnumerable<CombatEntity> GetEntities(Vector2Int position)
+        {
+            return ActiveMap.CombatEntities
+                .Where(x => x.Value == position)
+                .Select(x => x.Key);
         }
         
         public static Tile GetEntityTile(CombatEntity entity)

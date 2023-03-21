@@ -5,23 +5,23 @@ using UnityEngine;
 
 namespace CombatSystem.Selection
 {
-    [CreateAssetMenu(fileName = "Zone Selection Filter", menuName = "Combat System/Selection Filter/Zone", order = 999)]
+    [CreateAssetMenu(fileName = "Zone Selection Filter", menuName = "Combat System/Selection Filter/Zone")]
     public class ZoneSelectionFilter : SelectionLayerFilter
     {
         public bool SquareZone;
 
         public override bool AllowReChoice => NeedPath && !SquareZone;
 
-        protected override bool FilterTile(SelectionLayer Layer, Vector2Int Tile)
+        protected override bool FilterTile(SelectionTile tile, Vector2Int Tile)
         {
             var dist = SquareZone 
-                ? SquareDistance(Tile, Layer.Origin)
-                : CircleDistance(Tile, Layer.Origin, Layer);
+                ? SquareDistance(Tile, tile.Origin)
+                : CircleDistance(Tile, tile.Origin, tile);
 
-            return dist <= Layer.Size;
+            return dist <= tile.Size;
         }
 
-        int CircleDistance(Vector2Int pos, Vector2Int Origin, SelectionLayer Layer)
+        int CircleDistance(Vector2Int pos, Vector2Int Origin, SelectionTile tile)
         {
             if (!NeedPath)
             {
@@ -29,7 +29,7 @@ namespace CombatSystem.Selection
                 return Mathf.Abs(delta.x) + Mathf.Abs(delta.y);
             }
 
-            return Layer.CountPath(pos);
+            return tile.CountPath(pos);
         }
 
         int SquareDistance(Vector2Int Tile, Vector2Int Origin)
