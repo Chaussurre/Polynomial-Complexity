@@ -44,13 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c073bd1e1a6e4494f80b731d9f2bbecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilityName: Log Position
+  Icon: {fileID: -3886304538469277687, guid: 27603874df1e45e43954c3237a46d2d4, type: 3}
   Caster: {fileID: 0}
   Range: {fileID: 11400000, guid: 3a40d16574039834db7bd06877d40595, type: 2}
   RangeSize: 2
-  Zone: {fileID: 11400000, guid: 760dbd9198878844089b5f5811ff2e7b, type: 2}
-  ZoneSize: 1
   Effect: {fileID: 11400000, guid: eb50ad3eca1390040bea5bfb98e5bc19, type: 2}
-  TargetColor: {r: 0.990566, g: 0.14391239, b: 0.14391239, a: 1}
   repeat: 1
   Origin: {x: 0, y: 0}
   Selections: []

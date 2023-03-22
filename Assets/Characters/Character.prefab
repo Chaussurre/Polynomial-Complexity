@@ -91,6 +91,10 @@ PrefabInstance:
       propertyPath: AbilityManager
       value: 
       objectReference: {fileID: 5248781431443232006}
+    - target: {fileID: 6848678980060057181, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
+      propertyPath: MovementManager
+      value: 
+      objectReference: {fileID: 6464927885649133175}
     - target: {fileID: 6879274143095493297, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
       propertyPath: m_Name
       value: Character
@@ -154,8 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementFilter: {fileID: 0}
   Speed: 0
-  NextPathColor: {r: 1, g: 1, b: 1, a: 1}
-  PreviousPathColor: {r: 1, g: 1, b: 1, a: 1}
+  NextPathColor: {r: 0.32907715, g: 0.30566037, b: 1, a: 1}
+  PreviousPathColor: {r: 0.55131507, g: 0.53755784, b: 0.9433962, a: 1}
 --- !u!4 &8921123388478770100 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5431252299408980101, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}

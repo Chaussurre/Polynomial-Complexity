@@ -349,30 +349,6 @@ PrefabInstance:
       propertyPath: MovementFilter
       value: 
       objectReference: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: NextPathColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: NextPathColor.g
-      value: 0.30566037
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: NextPathColor.r
-      value: 0.32907715
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: PreviousPathColor.b
-      value: 0.9433962
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: PreviousPathColor.g
-      value: 0.53755784
-      objectReference: {fileID: 0}
-    - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: PreviousPathColor.r
-      value: 0.55131507
-      objectReference: {fileID: 0}
     - target: {fileID: 8042013291978259820, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: MovementManager
       value: 
@@ -383,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_LocalScale.x

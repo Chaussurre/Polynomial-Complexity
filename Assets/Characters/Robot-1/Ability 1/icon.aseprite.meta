@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 157eac2df8027c44b8f9b40676466d26
+guid: 27603874df1e45e43954c3237a46d2d4
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 64
+    spritePixelsToUnits: 100
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -113,18 +113,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   multiSpriteImportData:
-  - name: robot chat_0
+  - name: icon_0
     originalName: 
-    pivot: {x: 0.48214287, y: 0}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 28
-      height: 35
-    spriteID: 0692cc3c00100b5459b7756721e2c1ef
+      width: 64
+      height: 64
+    spriteID: 55b2fbdffa99d8446b44a1f4536a6a34
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -135,18 +135,18 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   asepriteLayers:
   - layerIndex: 0
-    name: robot chat
+    name: icon
     layerFlags: 0
     layerType: 0
     cells:
-    - name: robot chat_0
+    - name: icon_0
       frameIndex: 0
       cellRect:
-        x: 4
+        x: 0
         y: 0
-        width: 28
-        height: 35
-      spriteId: 0692cc3c00100b5459b7756721e2c1ef
+        width: 64
+        height: 64
+      spriteId: 55b2fbdffa99d8446b44a1f4536a6a34
     linkedCells: []
   platformSettings: []
   secondarySpriteTextures: []

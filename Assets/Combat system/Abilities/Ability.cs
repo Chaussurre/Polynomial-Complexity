@@ -6,6 +6,9 @@ namespace CombatSystem.Abilities
     
     public abstract class Ability : MonoBehaviour
     {
+        public string AbilityName = "Ability";
+        public Sprite Icon;
+            
         [HideInInspector] public CombatEntity Caster;
         
         public virtual void Start()

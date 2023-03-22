@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using CombatSystem.Map;
 using CombatSystem.Selection;
 using UnityEngine;
@@ -86,10 +83,23 @@ namespace CombatSystem.Entities
         {
             var Tiles = BattleMap.Tiles;
 
+            if (!MovementFilter.NeedPath)
+            {
+                if (!Hovered.HasValue) return;
+                
+                Tiles[BattleMap.PosToDelta(Hovered.Value)]
+                    .TileSelector
+                    .SetColor(NextPathColor);
+                Tiles[BattleMap.PosToDelta(tile.Origin)]
+                    .TileSelector
+                    .SetColor(NextPathColor);
+                return;
+            }
+            
             foreach (var tileDelta in Path) Tiles[tileDelta].TileSelector.SetColor(PreviousPathColor);
 
             if (!Hovered.HasValue || !tile.Positions.Contains(Hovered.Value)) return;
-            
+
             var delta = BattleMap.PosToDelta(Hovered.Value);
             var prev = tile.PreviousVector[delta];
             do
@@ -100,7 +110,7 @@ namespace CombatSystem.Entities
                 prev = tile.PreviousVector[delta];
             } while (delta != prev);
 
-            Tiles[delta].TileSelector.SetColor(Color.blue);
+            Tiles[delta].TileSelector.SetColor(NextPathColor);
         }
 
         private void SelectMoveWithSpeed(Vector2Int Position, int Moves)
@@ -108,10 +118,10 @@ namespace CombatSystem.Entities
             SelectionStackManager.AddLayer?.Invoke(new SelectionTile(
                 Position, 
                 MovementFilter, 
+                Moves,
                 OnSelect, 
                 OnCancel, 
-                OnHover,
-                Moves));
+                OnHover));
         }
 
         private void FinishMove(Vector2Int FinalPosition)
