@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CombatSystem.Selection
 {
     [CreateAssetMenu(fileName = "Zone Selection Filter", menuName = "Combat System/Selection Filter/Zone")]
-    public class ZoneSelectionFilter : SelectionLayerFilter
+    public class ZoneSelectionFilter : SelectionTileFilter
     {
         public bool SquareZone;
 

@@ -11,7 +11,7 @@ namespace CombatSystem.Entities
     public class MovementManager : MonoBehaviour
     {
         private CombatEntity Entity;
-        public SelectionLayerFilter MovementFilter;
+        public SelectionTileFilter MovementFilter;
 
         public int Speed;
         public int RemainingMoves { get; protected set; }

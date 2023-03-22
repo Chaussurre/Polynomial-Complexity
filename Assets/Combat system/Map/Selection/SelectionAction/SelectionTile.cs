@@ -12,18 +12,18 @@ namespace CombatSystem.Selection
         
         public Vector2Int Origin;
         
-        public readonly SelectionLayerFilter Filter;
+        public readonly SelectionTileFilter Filter;
         private readonly Action<SelectionTile, Vector2Int> OnSelected;
         private readonly Action<SelectionTile> OnCancel;
         private readonly Action<SelectionTile, Vector2Int?> OnHover;
         public readonly int Size;
 
         public SelectionTile(Vector2Int Origin,
-            SelectionLayerFilter Filter,
-            Action<SelectionTile, Vector2Int> OnSelected,
-            Action<SelectionTile> OnCancel,
-            Action<SelectionTile, Vector2Int?> OnHover,
-            int Size)
+            SelectionTileFilter Filter,
+            int Size,
+            Action<SelectionTile, Vector2Int> OnSelected = null,
+            Action<SelectionTile> OnCancel = null,
+            Action<SelectionTile, Vector2Int?> OnHover = null)
         {
             Positions = new();
             if (Filter.NeedPath)

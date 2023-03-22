@@ -44,6 +44,11 @@ namespace CombatSystem.Selection
             MapSelectionManager.OnHover.AddListener(OnHover);
         }
 
+        private void Start()
+        {
+            ClearStack?.Invoke();
+        }
+
         private void AddSelectionLayer(SelectionLayer Layer)
         {
             SelectionLayers.Push(Layer);

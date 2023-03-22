@@ -23,7 +23,7 @@ namespace CombatSystem.Selection
         NeverContainItself,
     }
 
-    public abstract class SelectionLayerFilter : ScriptableObject
+    public abstract class SelectionTileFilter : ScriptableObject
     {
         [SerializeField] private CombatEntityFilter CombatEntityFilter;
         [SerializeField] private bool EntityFilterOnlyBlock;

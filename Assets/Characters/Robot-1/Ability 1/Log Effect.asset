@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e616aedd59d8054191bcebbb2452f69, type: 3}
   m_Name: Log Effect
   m_EditorClassIdentifier: 
+  Zone: {fileID: 11400000, guid: 760dbd9198878844089b5f5811ff2e7b, type: 2}
+  ZoneSize: 2
+  HoverColor: 0
+  TargetColor: {r: 0.9056604, g: 0.77729654, b: 0.19138479, a: 1}
   message: PROUT

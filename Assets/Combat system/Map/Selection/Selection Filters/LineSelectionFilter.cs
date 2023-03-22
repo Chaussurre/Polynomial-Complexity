@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CombatSystem.Selection
 {
     [CreateAssetMenu(fileName = "Line Selection Filter", menuName = "Combat System/Selection Filter/Line")]
-    public class LineSelectionFilter : SelectionLayerFilter
+    public class LineSelectionFilter : SelectionTileFilter
     {
         protected override bool FilterTile(SelectionTile tile, Vector2Int Tile)
         {

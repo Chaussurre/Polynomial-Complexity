@@ -28,7 +28,7 @@ namespace CombatSystem.Map
 
         //private TweenerCore<Vector3, Vector3, VectorOptions> Tween = null;
 
-        void Start()
+        void Awake()
         {
             DefaultColor = TopRenderer.color;
             DefaultSize = BorderRenderer.size.y;

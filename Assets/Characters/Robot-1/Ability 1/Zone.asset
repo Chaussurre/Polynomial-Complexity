@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb706a3f3831594bb327633b5386cf9, type: 3}
   m_Name: Zone
   m_EditorClassIdentifier: 
-  CombatEntityFilter: 0
+  CombatEntityFilter: 1
   EntityFilterOnlyBlock: 0
   ContainItselfFilter: 1
   NeedPath: 0
-  SquareZone: 1
+  SquareZone: 0

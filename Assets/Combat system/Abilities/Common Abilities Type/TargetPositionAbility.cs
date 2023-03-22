@@ -10,15 +10,11 @@ namespace CombatSystem.Abilities
 {
     public class TargetPositionAbility : Ability
     {
-        public SelectionLayerFilter Range;
+        public SelectionTileFilter Range;
         public int RangeSize;
-        public SelectionLayerFilter Zone;
-        public int ZoneSize;
 
         public TargetPositionEffect Effect;
-
-        [SerializeField] private Color TargetColor = Color.white;
-
+        
         [SerializeField] private int repeat = 1;
         
         [HideInInspector] public Vector2Int Origin;
@@ -44,10 +40,10 @@ namespace CombatSystem.Abilities
             SelectionStackManager.AddLayer?.Invoke(new SelectionTile(
                 Origin,
                 Range,
+                RangeSize,
                 OnSelect,
                 OnCancel,
-                OnHover,
-                RangeSize));
+                Effect.OnHover));
         }
 
         private void OnSelect(SelectionTile selection, Vector2Int position)
@@ -67,27 +63,6 @@ namespace CombatSystem.Abilities
                 repeatedCount--;
         }
 
-        private void OnHover(SelectionTile selection, Vector2Int? position)
-        {
-            if (!position.HasValue || !selection.Positions.Contains(position.Value)) return;
-
-            if (Zone)
-            {
-                var zone = new SelectionTile(
-                    position.Value,
-                    Zone,
-                    null, null, null,
-                    ZoneSize);
-                foreach (var zonePosition in zone.Positions)
-                    BattleMap.Tiles[BattleMap.PosToDelta(zonePosition)]
-                        .TileSelector
-                        .SetColor(TargetColor);
-            }
-            else
-                BattleMap.Tiles[BattleMap.PosToDelta(position.Value)]
-                    .TileSelector.SetColor(TargetColor);
-        }
-
         public override void Cast()
         {
             Effect.Cast(this);
@@ -97,17 +72,20 @@ namespace CombatSystem.Abilities
 
     public abstract class TargetPositionEffect : AbilityEffect<TargetPositionAbility>
     {
+        public SelectionTileFilter Zone;
+        public int ZoneSize;
+
+        [SerializeField] private bool HoverColor = true;
+        [SerializeField] private Color TargetColor = Color.white;
+
         public override void Cast(TargetPositionAbility ability)
         {
-            if (ability.Zone)
+            if (Zone)
                 foreach (var position in ability.Selections
                              .Select(selection => new SelectionTile(
                                  selection,
-                                 ability.Zone,
-                                 null,
-                                 null,
-                                 null,
-                                 ability.ZoneSize))
+                                 Zone,
+                                 ZoneSize))
                              .SelectMany(zone => zone.Positions))
                     ApplyEffect(position);
             else
@@ -116,5 +94,28 @@ namespace CombatSystem.Abilities
         }
 
         protected abstract void ApplyEffect(Vector2Int position);
+
+        public virtual void OnHover(SelectionTile selection, Vector2Int? position)
+        {
+            if (!position.HasValue || !selection.Positions.Contains(position.Value) || !HoverColor) return;
+
+            if (Zone)
+            {
+                var zone = new SelectionTile(
+                    position.Value, 
+                    Zone,
+                    ZoneSize);
+                foreach (var zonePosition in zone.Positions)
+                    BattleMap.Tiles[BattleMap.PosToDelta(zonePosition)]
+                        .TileSelector
+                        .SetColor(TargetColor);
+            }
+            else
+            {
+                BattleMap.Tiles[BattleMap.PosToDelta(position.Value)]
+                    .TileSelector
+                    .SetColor(TargetColor);
+            }
+        }
     }
 }
