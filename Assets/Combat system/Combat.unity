@@ -400,6 +400,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 418571969009119793, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: Entities.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 418571969009119793, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: Entities.Array.data[0]
+      value: 
+      objectReference: {fileID: 2070034094}
+    - target: {fileID: 418571969009119793, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: Entities.Array.data[1]
+      value: 
+      objectReference: {fileID: 798115169}
     - target: {fileID: 648142668399949618, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: m_Name
       value: Map
@@ -450,6 +462,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3852466088752615575, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: camera
+      value: 
+      objectReference: {fileID: 236294937}
+    - target: {fileID: 3852466088752615575, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: SelectionCamera
       value: 
       objectReference: {fileID: 236294937}
     - target: {fileID: 6463917566560310015, guid: 86205e0533408d147950685f195f538a, type: 3}
@@ -557,28 +573,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 577eaa6cdc34a3c46beb39f30790dd41, type: 3}
---- !u!1 &1151306269 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 648142668399949618, guid: 86205e0533408d147950685f195f538a, type: 3}
-  m_PrefabInstance: {fileID: 861664947}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1151306275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1151306269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9134b24c6fb47bdafeef7ab5cc2f46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Steps:
-  - index: 0
-    ResetOnStep: 1
-  - index: 1
-    ResetOnStep: 1
 --- !u!1 &1607559056
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,6 +28,8 @@ namespace CombatSystem.Entities
         public static UnityEvent EndTurn = new();
 
         #endregion
+
+        [SerializeField] private bool AllowUnselect;
         
         [SerializeField] private List<TurnStep> Steps = new();
 
@@ -84,6 +86,12 @@ namespace CombatSystem.Entities
                 return;
             }
 
+            if (!AllowUnselect)
+            {
+                StartTurn(CurrentEntity);
+                return;
+            }
+            
             CurrentEntity = null;
             SelectionStackManager.ClearStack.Invoke();
         }

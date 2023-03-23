@@ -75,7 +75,7 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    customPivotPosition: {x: 0.5, y: 0}
     generateModelPrefab: 1
     generateAnimationClips: 1
     addShadowCasters: 0
@@ -84,7 +84,7 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    customPivotPosition: {x: 0.5, y: 0}
     generateModelPrefab: 1
     generateAnimationClips: 1
     addShadowCasters: 0
@@ -115,16 +115,76 @@ ScriptedImporter:
   multiSpriteImportData:
   - name: robot chat_0
     originalName: 
-    pivot: {x: 0.48214287, y: 0}
+    pivot: {x: 0.49999997, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 86
+      y: 4
+      width: 33
+      height: 51
+    spriteID: 0692cc3c00100b5459b7756721e2c1ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 86, y: 4}
+  - name: robot chat_3
+    originalName: 
+    pivot: {x: 0.49999997, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 65
+      width: 33
+      height: 50
+    spriteID: 2e238255e5e91d34d8b8230b96cd8277
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 65}
+  - name: robot chat_1
+    originalName: 
+    pivot: {x: 0.49999997, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 45
+      y: 4
+      width: 33
+      height: 52
+    spriteID: 2fe209a12ac22344fba837dbf31dbfdb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 45, y: 4}
+  - name: robot chat_2
+    originalName: 
+    pivot: {x: 0.49999997, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 28
-      height: 35
-    spriteID: 0692cc3c00100b5459b7756721e2c1ef
+      width: 33
+      height: 53
+    spriteID: 5505de6662549734fbf916a4d3d1d019
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,11 +202,35 @@ ScriptedImporter:
     - name: robot chat_0
       frameIndex: 0
       cellRect:
-        x: 4
+        x: 1
         y: 0
-        width: 28
-        height: 35
+        width: 33
+        height: 51
       spriteId: 0692cc3c00100b5459b7756721e2c1ef
+    - name: robot chat_3
+      frameIndex: 3
+      cellRect:
+        x: 1
+        y: 0
+        width: 33
+        height: 50
+      spriteId: 2e238255e5e91d34d8b8230b96cd8277
+    - name: robot chat_1
+      frameIndex: 1
+      cellRect:
+        x: 1
+        y: 0
+        width: 33
+        height: 52
+      spriteId: 2fe209a12ac22344fba837dbf31dbfdb
+    - name: robot chat_2
+      frameIndex: 2
+      cellRect:
+        x: 1
+        y: 0
+        width: 33
+        height: 53
+      spriteId: 5505de6662549734fbf916a4d3d1d019
     linkedCells: []
   platformSettings: []
   secondarySpriteTextures: []

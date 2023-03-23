@@ -17,20 +17,16 @@ namespace CombatSystem.Selection
         public static UnityEvent OnCancel = new();
         public static UnityEvent<Vector2Int?> OnHover = new();
 
-        public static UnityEvent<List<Vector2Int>> RefreshSelection = new();
-        public static UnityEvent<Vector2Int> TrySelectEntity = new();
-        
         #endregion
 
-        [SerializeField] protected Camera camera;
+        [SerializeField] protected Camera SelectionCamera;
         
         private int Hovered { get; set; } = -1;
         private TileSelector HoveredTile => Hovered != -1? GetTile(Hovered) : null;
 
         private void Awake()
         {
-            RefreshSelection.AddListener(RefreshSelectionFilter);            
-            TrySelectEntity.AddListener(OnTrySelectEntity);
+            SelectionStackManager.OnLayerBecomeActive.AddListener(RefreshSelectionFilter);            
         }
 
         private TileSelector GetTile(int index)
@@ -38,16 +34,35 @@ namespace CombatSystem.Selection
             return BattleMap.Tiles[index].TileSelector;
         }
 
-        private void RefreshSelectionFilter(List<Vector2Int> Positions)
+        private void RefreshSelectionFilter(SelectionLayer layer)
         {
-            if (Positions != null)
-                for (int i = 0; i < BattleMap.Tiles.Count; i++)
-                    GetTile(i).SetState(Positions.Contains(BattleMap.DeltaToPos(i))
-                        ? TileSelectorState.OnLayer
-                        : TileSelectorState.OffLayer);
-            else
-                foreach (var Tile in BattleMap.Tiles)
-                    Tile.TileSelector.SetState(TileSelectorState.NoCurrentLayer);
+            switch (layer)
+            {
+                case null:
+                    ResetTilesState();
+                    break;
+                case SelectionTile tileLayer:
+                    for (var i = 0; i < BattleMap.Tiles.Count; i++)
+                        GetTile(i).SetState(tileLayer.Positions.Contains(BattleMap.DeltaToPos(i))
+                            ? TileSelectorState.OnLayer
+                            : TileSelectorState.OffLayer);
+                    break;
+                case SelectionAction tileAction:
+                    for (var i = 0; i < BattleMap.Tiles.Count; i++)
+                        GetTile(i).SetState(BattleMap.DeltaToPos(i) == tileAction.Origin
+                            ? TileSelectorState.OnLayer
+                            : TileSelectorState.OffLayer);
+                    break;
+                default:
+                    ResetTilesState();
+                    break;
+            }
+        }
+
+        private void ResetTilesState()
+        {
+            foreach (var Tile in BattleMap.Tiles)
+                Tile.TileSelector.SetState(TileSelectorState.NoCurrentLayer);
         }
 
         void UnHover()
@@ -78,13 +93,13 @@ namespace CombatSystem.Selection
             
             if (index == -1)
             {
-                OnHover?.Invoke(null);
+                OnHover.Invoke(null);
                 return;
             }
             
             var pos = BattleMap.DeltaToPos(index);
             
-            OnHover?.Invoke(pos);
+            OnHover.Invoke(pos);
 
             var selector = GetTile(index);
 
@@ -101,8 +116,8 @@ namespace CombatSystem.Selection
 
         private void Update()
         {
-            if(!camera) return;
-            var mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+            if(!SelectionCamera) return;
+            var mousePos = SelectionCamera.ScreenToWorldPoint(Input.mousePosition);
             
             if (!HoveredTile?.isOverMe(mousePos) ?? true)
                 CheckHover(mousePos);
@@ -119,7 +134,7 @@ namespace CombatSystem.Selection
             if (Hovered == -1) return;
 
             var pos = BattleMap.DeltaToPos(Hovered);
-            OnSelect?.Invoke(pos);
+            OnSelect.Invoke(pos);
 
             //Put hovered tile back in hover mode
             CheckHover(MousePos);
@@ -127,18 +142,10 @@ namespace CombatSystem.Selection
 
         void Cancel(Vector2 MousePos)
         {
-            OnCancel?.Invoke();
+            OnCancel.Invoke();
 
             //Put hovered tile back in hover mode
             CheckHover(MousePos);
-        }
-
-        private void OnTrySelectEntity(Vector2Int position)
-        {
-            var entity = BattleMap.GetEntities(position)
-                .FirstOrDefault(x => x.CanTakeTurn);
-            if (entity)
-                TurnManager.StartEntityTurn?.Invoke(entity);
         }
     }
 }

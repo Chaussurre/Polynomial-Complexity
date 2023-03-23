@@ -24,12 +24,19 @@ namespace CombatSystem.Selection
 
         /// <summary>
         /// Called whenever the top Selection Layer changes.
-        /// The argument is the new SelectionLayer.
+        /// The argument is the new top SelectionLayer.
         /// </summary>
         public static UnityEvent<SelectionLayer> OnLayerBecomeActive = new();
+        
+        /// <summary>
+        /// Called whenever the top Selection is canceled.
+        /// The argument is the new top SelectionLayer.
+        /// </summary>
         public static UnityEvent<SelectionLayer> OnCancel = new();
         
         #endregion
+
+        [SerializeField] private bool CanCancelLastChoice;
         
         private readonly Stack<SelectionLayer> SelectionLayers = new();
 
@@ -45,40 +52,33 @@ namespace CombatSystem.Selection
             MapSelectionManager.OnHover.AddListener(OnHover);
         }
 
-        private void Start()
-        {
-            ClearStack?.Invoke();
-        }
-
         private void AddSelectionLayer(SelectionLayer Layer)
         {
             SelectionLayers.Push(Layer);
             
-            OnLayerBecomeActive?.Invoke(Layer);
-            RefreshSelection();
+            OnLayerBecomeActive.Invoke(Layer);
         }
         
         private void OnSelect(Vector2Int pos)
         {
-            if (SelectionLayers.Count > 0)
-            {
-                if (LastLayer is SelectionTile TileLayer && TileLayer.Positions.Contains(pos))
-                    TileLayer.Select(pos);
-            }
-            else
-                MapSelectionManager.TrySelectEntity?.Invoke(pos);
+            if (SelectionLayers.Count <= 0) return;
+            
+            if (LastLayer is SelectionTile TileLayer && TileLayer.Positions.Contains(pos))
+                TileLayer.Select(pos);
         }
 
         private void CancelLayer()
         {
+            if (SelectionLayers.Count == 1 && !CanCancelLastChoice)
+                return;
+            
             if(SelectionLayers.TryPop(out var layer))
                 layer.Cancel();
-            
-            if(SelectionLayers.TryPeek(out var newTop)) 
-                OnLayerBecomeActive?.Invoke(newTop);
 
+            SelectionLayers.TryPeek(out var newTop);
+            
+            OnLayerBecomeActive.Invoke(newTop);
             OnCancel.Invoke(newTop);
-            RefreshSelection();
         }
 
         private void OnHover(Vector2Int? pos)
@@ -90,16 +90,6 @@ namespace CombatSystem.Selection
         private void OnClearStack()
         {
             SelectionLayers.Clear();
-            
-            RefreshSelection();
-        }
-
-        private void RefreshSelection()
-        {
-            MapSelectionManager.RefreshSelection?
-                .Invoke(SelectionLayers.Count > 0 && LastLayer is SelectionTile selectionTile
-                    ? selectionTile.Positions
-                    : null);
         }
     }
 }

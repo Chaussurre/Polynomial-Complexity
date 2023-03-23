@@ -9,9 +9,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2858116340880500612, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_Size.x
+      value: 0.515625
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858116340880500612, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_Size.y
+      value: 0.796875
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858116340880500612, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -221272520644986173, guid: 157eac2df8027c44b8f9b40676466d26, type: 3}
+    - target: {fileID: 5389628130585082816, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 02675d26919a05a40a8b62a6db83099e, type: 2}
     - target: {fileID: 6377252783111627016, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: Speed
       value: 3

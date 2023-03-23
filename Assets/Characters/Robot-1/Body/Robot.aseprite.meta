@@ -7,7 +7,7 @@ ScriptedImporter:
       type: UnityEngine:AnimationClip
       assembly: UnityEngine.AnimationModule
       name: Idle
-    second: {fileID: 7400000, guid: c2bc678603aa9604096f96bad639de2c, type: 2}
+    second: {fileID: 7400000, guid: b56963d4600740544ae39c23677c161a, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -81,7 +81,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 9
     customPivotPosition: {x: 0.4, y: 0}
-    generateModelPrefab: 1
+    generateModelPrefab: 0
     generateAnimationClips: 1
     addShadowCasters: 0
   asepriteImporterSettings:
@@ -90,7 +90,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 9
     customPivotPosition: {x: 0.4, y: 0}
-    generateModelPrefab: 1
+    generateModelPrefab: 0
     generateAnimationClips: 1
     addShadowCasters: 0
   importFileNodeState: 1
@@ -118,9 +118,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   multiSpriteImportData:
-  - name: Layer_0
+  - name: Body_0
     originalName: 
-    pivot: {x: 0.3636364, y: 0}
+    pivot: {x: 0.4, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -129,7 +129,7 @@ ScriptedImporter:
       y: 4
       width: 33
       height: 65
-    spriteID: 3dc7f6a7ea37cb44181f4e860df9f5d2
+    spriteID: 0ffcc9c2c7e0b73408c98ed43e3798b2
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -138,9 +138,9 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Layer_1
+  - name: Body_1
     originalName: 
-    pivot: {x: 0.3636364, y: 0}
+    pivot: {x: 0.4, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -149,7 +149,7 @@ ScriptedImporter:
       y: 4
       width: 32
       height: 62
-    spriteID: 42ffea19af28b1440a22afbfb239a507
+    spriteID: 60460947e731c3a44a1a139f73a53a4d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -160,26 +160,26 @@ ScriptedImporter:
     uvTransform: {x: 45, y: 4}
   asepriteLayers:
   - layerIndex: 0
-    name: Layer
+    name: Body
     layerFlags: 3
     layerType: 0
     cells:
-    - name: Layer_0
+    - name: Body_0
       frameIndex: 0
       cellRect:
         x: 32
         y: 2
         width: 33
         height: 65
-      spriteId: 3dc7f6a7ea37cb44181f4e860df9f5d2
-    - name: Layer_1
+      spriteId: 0ffcc9c2c7e0b73408c98ed43e3798b2
+    - name: Body_1
       frameIndex: 1
       cellRect:
         x: 33
         y: 2
         width: 32
         height: 62
-      spriteId: 42ffea19af28b1440a22afbfb239a507
+      spriteId: 60460947e731c3a44a1a139f73a53a4d
     linkedCells: []
   platformSettings: []
   secondarySpriteTextures: []
