@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -221272520644986173, guid: 157eac2df8027c44b8f9b40676466d26, type: 3}
+    - target: {fileID: 6377252783111627016, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: Speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6377252783111627016, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: MovementFilter
+      value: 
+      objectReference: {fileID: 11400000, guid: f94e571a759e20c49adc08d8a7e93697, type: 2}
     - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: Speed
       value: 3

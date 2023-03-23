@@ -27,6 +27,7 @@ namespace CombatSystem.Selection
         /// The argument is the new SelectionLayer.
         /// </summary>
         public static UnityEvent<SelectionLayer> OnLayerBecomeActive = new();
+        public static UnityEvent<SelectionLayer> OnCancel = new();
         
         #endregion
         
@@ -40,7 +41,7 @@ namespace CombatSystem.Selection
             ClearStack.AddListener(OnClearStack);
             
             MapSelectionManager.OnSelect.AddListener(OnSelect);
-            MapSelectionManager.OnCancel.AddListener(OnCancel);
+            MapSelectionManager.OnCancel.AddListener(CancelLayer);
             MapSelectionManager.OnHover.AddListener(OnHover);
         }
 
@@ -68,14 +69,15 @@ namespace CombatSystem.Selection
                 MapSelectionManager.TrySelectEntity?.Invoke(pos);
         }
 
-        private void OnCancel()
+        private void CancelLayer()
         {
             if(SelectionLayers.TryPop(out var layer))
                 layer.Cancel();
             
-            if(SelectionLayers.TryPeek(out var newTop))
+            if(SelectionLayers.TryPeek(out var newTop)) 
                 OnLayerBecomeActive?.Invoke(newTop);
-            
+
+            OnCancel.Invoke(newTop);
             RefreshSelection();
         }
 

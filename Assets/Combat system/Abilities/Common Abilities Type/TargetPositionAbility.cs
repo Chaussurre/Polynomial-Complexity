@@ -52,7 +52,7 @@ namespace CombatSystem.Abilities
             repeatedCount++;
             
             if (repeatedCount == repeat)
-                Cast();
+                FinishedSelect(Origin);
             else
                 AddSelectionLayer();
         }
@@ -63,10 +63,9 @@ namespace CombatSystem.Abilities
                 repeatedCount--;
         }
 
-        public override void Cast()
+        protected override void Cast()
         {
             Effect.Cast(this);
-            SelectionStackManager.ClearStack?.Invoke();
         }
     }
 

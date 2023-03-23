@@ -14,7 +14,7 @@ namespace CombatSystem.Selection
         public readonly List<Ability> Abilities = new();
 
         public readonly CombatEntity Caster;
-        public readonly Vector2Int Origin;
+        public Vector2Int Origin;
         
         private readonly Action<SelectionAction, int> OnSelected;
         private readonly Action<SelectionAction> OnCancel;

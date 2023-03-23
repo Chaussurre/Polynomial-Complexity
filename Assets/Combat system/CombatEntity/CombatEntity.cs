@@ -1,42 +1,47 @@
+using System;
+using System.Collections.Generic;
 using CombatSystem.Abilities;
+using CombatSystem.Map;
 using CombatSystem.Selection;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CombatSystem.Entities
 {
     public class CombatEntity : MonoBehaviour
     {
-        public CombatEntityView View;
+        public bool CanTakeTurn = true;
+        
+        public CombatEntityView View; 
         
         public HealthStatus HealthStatus;
 
-        public AbilityManager AbilityManager;
+        public List<ActionManager> ActionManagers;
 
-        public MovementManager MovementManager;
-        
-        public bool Select(Vector2Int position)
+        public void NextTurnStep(Vector2Int position)
         {
-            if (MovementManager)
-            {
-                MovementManager.SelectMove(position);
-                return true;
-            }
-
-            if (AbilityManager)
-            {
-                AbilityManager.SelectAbilities(position);
-                return true;
-            }
-
-            return false;
+            TurnManager.NextTurnStep?.Invoke(position);
         }
 
-        public void FinishMovement(Vector2Int position)
+        public void ResetActionManager(int ManagerIndex)
         {
-            if (AbilityManager)
-                AbilityManager.SelectAbilities(position);
-            else
-                SelectionStackManager.ClearStack?.Invoke();
+            if (ManagerIndex < ActionManagers.Count)
+                ActionManagers[ManagerIndex].ResetTurn();
+        }
+        
+        public void DoAction(Vector2Int position, int ManagerIndex)
+        {
+            if (ManagerIndex >= ActionManagers.Count)
+                return;
+            
+            if (!ActionManagers[ManagerIndex].SelectAction(position))
+                NextTurnStep(position);
+        }
+
+        public void EndTurn()
+        {
+            foreach (var actionManager in ActionManagers) 
+                actionManager.EndTurn();
         }
     }
 }

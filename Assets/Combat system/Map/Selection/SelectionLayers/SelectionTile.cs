@@ -41,7 +41,7 @@ namespace CombatSystem.Selection
             ApplySelectionFilter();
         }
 
-        void ApplySelectionFilter()
+        private void ApplySelectionFilter()
         {
             Positions.Clear();
 
@@ -51,7 +51,7 @@ namespace CombatSystem.Selection
                 ApplySelectionFilterNonContinuous();
         }
 
-        void ApplySelectionFilterNonContinuous()
+        private void ApplySelectionFilterNonContinuous()
         {
             for (int i = 0; i < BattleMap.Tiles.Count; i++)
                 ApplyFilterToDelta(i);
@@ -68,7 +68,7 @@ namespace CombatSystem.Selection
             return !block;
         }
 
-        void ApplySelectionFilterContinuous()
+        private void ApplySelectionFilterContinuous()
         {
             for (int i = 0; i < BattleMap.Tiles.Count; i++)
                 PreviousVector.Add(-1);
@@ -116,6 +116,7 @@ namespace CombatSystem.Selection
                     Visible.Add(pair.Key, pair.Value);
             }
         }
+        
         public int CountPath(Vector2Int position)
         {
             int count = 0;

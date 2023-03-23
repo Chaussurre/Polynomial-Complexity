@@ -36,7 +36,7 @@ namespace CombatSystem.Map
         
         [SerializeField] private Tile TilePrefab;
 
-        public readonly Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
+        private readonly Dictionary<CombatEntity, Vector2Int> CombatEntities = new();
 
         private void Awake()
         {
@@ -90,6 +90,11 @@ namespace CombatSystem.Map
                 return null;
             
             return Tiles[PosToDelta(ActiveMap.CombatEntities[entity])];
+        }
+
+        public static Vector2Int GetEntityPos(CombatEntity entity)
+        {
+            return ActiveMap.CombatEntities[entity];
         }
 
         public static int PosToDelta(Vector2Int pos)

@@ -19,6 +19,12 @@ namespace CombatSystem.Abilities
         public abstract void Select(Vector2Int Position);
 
 
-        public abstract void Cast();
+        public void FinishedSelect(Vector2Int position)
+        {
+            Cast();
+            Caster.NextTurnStep(position);
+        }
+
+        protected abstract void Cast();
     }
 }

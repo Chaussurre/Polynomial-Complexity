@@ -341,25 +341,37 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 219d4716a9c5891479081c364cad14a4, type: 2}
+    - target: {fileID: 6377252783111627016, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: Speed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6377252783111627016, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: MovementFilter
+      value: 
+      objectReference: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
     - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: Speed
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: MovementFilter
       value: 
       objectReference: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
-    - target: {fileID: 8042013291978259820, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-      propertyPath: MovementManager
+    - target: {fileID: 7087541440452609837, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: Abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087541440452609837, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
+      propertyPath: Abilities.Array.data[0]
       value: 
-      objectReference: {fileID: 8963894026483885640}
+      objectReference: {fileID: 2703403338462057243}
     - target: {fileID: 8064128505941844352, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_Name
       value: Robot
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8921123388478770100, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
       propertyPath: m_LocalScale.x
@@ -436,14 +448,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1306874908322501838, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
   m_PrefabInstance: {fileID: 2728670887769495615}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8963894026483885640 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6464927885649133175, guid: a5561a796a99fd54bb372af7a6d62348, type: 3}
-  m_PrefabInstance: {fileID: 2728670887769495615}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d443cc73ba2a59d4ea63cbe51e133bc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

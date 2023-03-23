@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using CombatSystem.Entities;
 using CombatSystem.Map;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 
 namespace CombatSystem.Selection
@@ -136,8 +135,10 @@ namespace CombatSystem.Selection
 
         private void OnTrySelectEntity(Vector2Int position)
         {
-            BattleMap.GetEntities(position)
-                .FirstOrDefault(x => x.Select(position));
+            var entity = BattleMap.GetEntities(position)
+                .FirstOrDefault(x => x.CanTakeTurn);
+            if (entity)
+                TurnManager.StartEntityTurn?.Invoke(entity);
         }
     }
 }

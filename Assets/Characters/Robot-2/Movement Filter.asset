@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eabb8a53e92fc314bb979f90adadbb8c, type: 3}
   m_Name: Movement Filter
   m_EditorClassIdentifier: 
-  CombatEntityFilter: 0
+  CombatEntityFilter: 1
   EntityFilterOnlyBlock: 0
-  ContainItselfFilter: 0
-  NeedPath: 0
+  ContainItselfFilter: 1
+  NeedPath: 1

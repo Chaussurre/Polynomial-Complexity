@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CombatEntityFilter: 1
   EntityFilterOnlyBlock: 0
-  ContainItselfFilter: 1
+  ContainItselfFilter: 0
   NeedPath: 0
   SquareZone: 0

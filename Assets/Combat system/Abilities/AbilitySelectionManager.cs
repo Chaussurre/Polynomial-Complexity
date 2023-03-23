@@ -13,7 +13,7 @@ namespace CombatSystem
 
         [SerializeField] private GameObject Buttons;
         
-        private void Start()
+        private void Awake()
         {
             SelectionStackManager.OnLayerBecomeActive.AddListener(OnLayerActive);
             SelectionStackManager.ClearStack.AddListener(HideAction);
