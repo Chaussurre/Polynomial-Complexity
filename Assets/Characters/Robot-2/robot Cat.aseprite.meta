@@ -2,7 +2,12 @@ fileFormatVersion: 2
 guid: 157eac2df8027c44b8f9b40676466d26
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Idle
+    second: {fileID: 7400000, guid: b6716d0e7a1144640820beb028224754, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -75,8 +80,8 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0}
-    generateModelPrefab: 1
+    customPivotPosition: {x: 0.5, y: 0.5}
+    generateModelPrefab: 0
     generateAnimationClips: 1
     addShadowCasters: 0
   asepriteImporterSettings:
@@ -84,8 +89,8 @@ ScriptedImporter:
     layerImportMode: 1
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0}
-    generateModelPrefab: 1
+    customPivotPosition: {x: 0.5, y: 0.5}
+    generateModelPrefab: 0
     generateAnimationClips: 1
     addShadowCasters: 0
   importFileNodeState: 1
@@ -113,7 +118,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   multiSpriteImportData:
-  - name: robot chat_0
+  - name: robot Cat_0
     originalName: 
     pivot: {x: 0.49999997, y: 0}
     alignment: 9
@@ -124,7 +129,7 @@ ScriptedImporter:
       y: 4
       width: 33
       height: 51
-    spriteID: 0692cc3c00100b5459b7756721e2c1ef
+    spriteID: 54200ffffdc9bf24494f83d3fb989afa
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -133,7 +138,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 86, y: 4}
-  - name: robot chat_3
+  - name: robot Cat_3
     originalName: 
     pivot: {x: 0.49999997, y: 0}
     alignment: 9
@@ -144,7 +149,7 @@ ScriptedImporter:
       y: 65
       width: 33
       height: 50
-    spriteID: 2e238255e5e91d34d8b8230b96cd8277
+    spriteID: 2f485564cdf5bd040a7d5a853f4aec6b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,7 +158,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 65}
-  - name: robot chat_1
+  - name: robot Cat_1
     originalName: 
     pivot: {x: 0.49999997, y: 0}
     alignment: 9
@@ -164,7 +169,7 @@ ScriptedImporter:
       y: 4
       width: 33
       height: 52
-    spriteID: 2fe209a12ac22344fba837dbf31dbfdb
+    spriteID: 2ef3e5f18b923094bbc2cd22c3542236
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -173,7 +178,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 45, y: 4}
-  - name: robot chat_2
+  - name: robot Cat_2
     originalName: 
     pivot: {x: 0.49999997, y: 0}
     alignment: 9
@@ -184,7 +189,7 @@ ScriptedImporter:
       y: 4
       width: 33
       height: 53
-    spriteID: 5505de6662549734fbf916a4d3d1d019
+    spriteID: d7dec7fcd0fe7534189e5c86c372119e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -195,42 +200,42 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   asepriteLayers:
   - layerIndex: 0
-    name: robot chat
+    name: robot Cat
     layerFlags: 0
     layerType: 0
     cells:
-    - name: robot chat_0
+    - name: robot Cat_0
       frameIndex: 0
       cellRect:
         x: 1
         y: 0
         width: 33
         height: 51
-      spriteId: 0692cc3c00100b5459b7756721e2c1ef
-    - name: robot chat_3
+      spriteId: 54200ffffdc9bf24494f83d3fb989afa
+    - name: robot Cat_3
       frameIndex: 3
       cellRect:
         x: 1
         y: 0
         width: 33
         height: 50
-      spriteId: 2e238255e5e91d34d8b8230b96cd8277
-    - name: robot chat_1
+      spriteId: 2f485564cdf5bd040a7d5a853f4aec6b
+    - name: robot Cat_1
       frameIndex: 1
       cellRect:
         x: 1
         y: 0
         width: 33
         height: 52
-      spriteId: 2fe209a12ac22344fba837dbf31dbfdb
-    - name: robot chat_2
+      spriteId: 2ef3e5f18b923094bbc2cd22c3542236
+    - name: robot Cat_2
       frameIndex: 2
       cellRect:
         x: 1
         y: 0
         width: 33
         height: 53
-      spriteId: 5505de6662549734fbf916a4d3d1d019
+      spriteId: d7dec7fcd0fe7534189e5c86c372119e
     linkedCells: []
   platformSettings: []
   secondarySpriteTextures: []
