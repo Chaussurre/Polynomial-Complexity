@@ -12,7 +12,7 @@ namespace CombatSystem.Entities
 
         private void Awake()
         {
-            TurnManager.EndTurn.AddListener(NextTurn);
+            TurnManager.OnEndTurn.AddListener(NextTurn);
         }
 
         private void Start()

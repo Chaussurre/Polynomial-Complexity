@@ -25,7 +25,7 @@ namespace CombatSystem.Entities
 
         public static UnityEvent<CombatEntity> StartEntityTurn = new();
         public static UnityEvent<Vector2Int> NextTurnStep = new();
-        public static UnityEvent EndTurn = new();
+        public static UnityEvent OnEndTurn = new();
 
         #endregion
 
@@ -42,7 +42,6 @@ namespace CombatSystem.Entities
             StartEntityTurn.AddListener(StartTurn);
             NextTurnStep.AddListener(NextStep);
             SelectionStackManager.OnCancel.AddListener(OnCancelTurnStep);
-            EndTurn.AddListener(OnEndTurn);
 
             turnStepSelectionLayer = new();
         }
@@ -63,7 +62,7 @@ namespace CombatSystem.Entities
             currentStep++;
             if (currentStep == Steps.Count)
             {
-                EndTurn.Invoke();
+                EndTurn();
                 return;
             }
 
@@ -96,11 +95,12 @@ namespace CombatSystem.Entities
             SelectionStackManager.ClearStack.Invoke();
         }
         
-        private void OnEndTurn()
+        private void EndTurn()
         {
             CurrentEntity.EndTurn();
             CurrentEntity = null;
             SelectionStackManager.ClearStack.Invoke();
+            OnEndTurn.Invoke();
         }
     }
 }
