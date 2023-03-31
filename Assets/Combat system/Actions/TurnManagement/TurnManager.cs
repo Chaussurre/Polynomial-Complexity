@@ -10,7 +10,8 @@ namespace CombatSystem.Entities
     [Serializable]
     public struct TurnStep
     {
-        public int index;
+        public string StepId;
+        public bool required;
         public bool ResetOnStep;
     }
 
@@ -58,19 +59,23 @@ namespace CombatSystem.Entities
             if (!CurrentEntity) return;
 
             SelectionStackManager.AddLayer.Invoke(turnStepSelectionLayer);
-            
-            currentStep++;
-            if (currentStep == Steps.Count)
-            {
-                EndTurn();
-                return;
-            }
 
-            var step = Steps[currentStep];
-            
-            if (step.ResetOnStep)
-                CurrentEntity.ResetActionManager(step.index);
-            CurrentEntity.DoAction(position, step.index);
+            currentStep++;
+            for (;; currentStep++)
+            {
+                if (currentStep == Steps.Count)
+                {
+                    EndTurn();
+                    return;
+                }
+
+                var step = Steps[currentStep];
+
+                if (step.ResetOnStep)
+                    CurrentEntity.ResetActionManager(step.StepId);
+                if(CurrentEntity.DoAction(position, step.StepId))
+                    break;
+            }
         }
 
         private void OnCancelTurnStep(SelectionLayer layer)

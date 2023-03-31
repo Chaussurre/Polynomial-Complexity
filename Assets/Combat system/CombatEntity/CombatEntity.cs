@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CombatSystem.Abilities;
 using CombatSystem.Map;
 using CombatSystem.Selection;
@@ -23,19 +24,19 @@ namespace CombatSystem.Entities
             TurnManager.NextTurnStep?.Invoke(position);
         }
 
-        public void ResetActionManager(int ManagerIndex)
+        public bool ResetActionManager(string ManagerID)
         {
-            if (ManagerIndex < ActionManagers.Count)
-                ActionManagers[ManagerIndex].ResetTurn();
+            var manager = ActionManagers.FirstOrDefault(x => x.ID == ManagerID); 
+            manager?.ResetTurn();
+
+            return manager;
         }
         
-        public void DoAction(Vector2Int position, int ManagerIndex)
+        public bool DoAction(Vector2Int position, string ManagerID)
         {
-            if (ManagerIndex >= ActionManagers.Count)
-                return;
-            
-            if (!ActionManagers[ManagerIndex].SelectAction(position))
-                NextTurnStep(position);
+            var manager = ActionManagers.FirstOrDefault(x => x.ID == ManagerID);
+
+            return manager && manager.SelectAction(position);
         }
 
         public void EndTurn()

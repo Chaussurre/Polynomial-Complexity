@@ -20,6 +20,8 @@ namespace CombatSystem.Entities
         private readonly Stack<int> MoveChoices = new();
         private readonly Stack<int> MovesDone = new();
 
+        public override string ID => "Movement";
+
         private void Start()
         {
             Entity = GetComponentInParent<CombatEntity>();

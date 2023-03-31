@@ -435,6 +435,14 @@ PrefabInstance:
       propertyPath: SelectionCamera
       value: 
       objectReference: {fileID: 236294937}
+    - target: {fileID: 4244261026709151733, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: Steps.Array.data[0].StepId
+      value: Movement
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244261026709151733, guid: 86205e0533408d147950685f195f538a, type: 3}
+      propertyPath: Steps.Array.data[1].StepId
+      value: Abilities
+      objectReference: {fileID: 0}
     - target: {fileID: 6463917566560310015, guid: 86205e0533408d147950685f195f538a, type: 3}
       propertyPath: InitializeCombatEntities.Array.size
       value: 2

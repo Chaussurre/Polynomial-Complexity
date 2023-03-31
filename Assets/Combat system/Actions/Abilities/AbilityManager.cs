@@ -13,7 +13,9 @@ namespace CombatSystem.Abilities
         public List<Ability> Abilities;
 
         private SelectionAction SelectionAction;
-        
+
+        public override string ID => "Abilities";
+
         private void Start()
         {
             Entity = GetComponentInParent<CombatEntity>();
