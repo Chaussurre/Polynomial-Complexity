@@ -25,9 +25,13 @@ namespace CombatSystem.Entities
         {
             var manager = target as ActionManager;
 
-            GUILayout.Label("ID :");
-            GUILayout.TextField(manager.ID);
-            GUILayout.Space(10);
+            if (manager)
+            {
+                GUILayout.Label("ID :");
+                GUILayout.TextField(manager.ID);
+                GUILayout.Space(10);
+            }
+
             base.OnInspectorGUI();
         }
     }

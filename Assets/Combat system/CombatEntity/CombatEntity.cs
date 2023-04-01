@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using CombatSystem.Abilities;
-using CombatSystem.Map;
-using CombatSystem.Selection;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace CombatSystem.Entities
 {

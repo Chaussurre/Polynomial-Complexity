@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CombatSystem.Map;
 using CombatSystem.Selection;
+using TMPro;
 using UnityEngine;
 
 namespace CombatSystem.Entities
@@ -10,15 +11,21 @@ namespace CombatSystem.Entities
         public SelectionTileFilter MovementFilter;
 
         public int Speed;
-        public int RemainingMoves { get; protected set; }
+        private int RemainingMoves;
         
         [SerializeField] private Color NextPathColor = Color.white;
         [SerializeField] private Color PreviousPathColor = Color.white;
 
         private CombatEntity Entity;
-        private readonly Stack<int> Path = new();
-        private readonly Stack<int> MoveChoices = new();
-        private readonly Stack<int> MovesDone = new();
+
+        private struct PathStep
+        {
+            public int TargetDelta;
+            public int Cost;
+            public bool Choice;
+        }
+        
+        private readonly Stack<PathStep> Path = new();
 
         public override string ID => "Movement";
 
@@ -44,77 +51,34 @@ namespace CombatSystem.Entities
         public override void EndTurn()
         {
             Path.Clear();
-            MoveChoices.Clear();
-            MovesDone.Clear();
         }
 
         private void OnSelect(SelectionTile selectionTile, Vector2Int position)
         {
-            BattleMap.MoveEntity?.Invoke(Entity, position);
-            var delta = BattleMap.PosToDelta(position);
 
-            if (MovementFilter.NeedPath)
-            {
-                if (position == selectionTile.Origin)
-                {
-                    //MoveChoices.Push(Path.Count);
-                    FinishMove(position);
-                }
-                else
-                {
-                    GetPath(selectionTile, delta);
-                    Path.TryPop(out _);
-                
-                    if (MovementFilter.AllowReChoice)
-                    {
-                        var movesCount = Path.Count - (MoveChoices.Count > 0 ? MoveChoices.Peek() : 0);
-                        MovesDone.Push(movesCount);
-                        RemainingMoves -= movesCount;
-                    }
-                    else
-                    {
-                        MovesDone.Push(RemainingMoves);
-                        RemainingMoves = 0;
-                    }
-                
-                    MoveChoices.Push(Path.Count);
-                    
-                    SelectMoveWithSpeed(position, RemainingMoves);
-                }
-            }
+            if (position == selectionTile.Origin)
+                FinishMove(position);
             else
             {
-                Path.Push(BattleMap.PosToDelta(selectionTile.Origin));
-                
-                MoveChoices.Push(Path.Count);
-                MovesDone.Push(RemainingMoves);
-                RemainingMoves = 0;
-                
-                if (selectionTile.Origin == position)
-                    FinishMove(position);
-                else
-                    SelectMoveWithSpeed(position, 0);
+                DoPath(selectionTile, position);
+                SelectMoveWithSpeed(position, RemainingMoves);
             }
         }
 
         private void OnCancel(SelectionTile tile)
         {
-            if (Path.Count > 0)
+            //popping Path until we reach the last position a choice has been made
+            if(Path.Count == 0) return;
+            
+            bool end; 
+            do
             {
-                MoveChoices.TryPop(out _);
-                var lastChoice = MoveChoices.TryPeek(out var choice) ? choice : 0;
+                var step = Path.Pop();
+                end = step.Choice;
+                RemainingMoves += step.Cost;
+                ActionBuffer.PopActions.Invoke(1);
 
-                while (Path.Count > lastChoice + 1)
-                    Path.Pop();
-
-                var position = BattleMap.DeltaToPos(Path.Pop());
-                BattleMap.MoveEntity?.Invoke(Entity, position);
-            }
-
-            if (MovesDone.TryPop(out var moves))
-            {
-                RemainingMoves += moves;
-            }
+            } while (!end && Path.Count > 0);
         }
 
         private void OnHover(SelectionTile selectionTile, Vector2Int? Hovered)
@@ -134,7 +98,7 @@ namespace CombatSystem.Entities
                 return;
             }
             
-            foreach (var tileDelta in Path) Tiles[tileDelta].TileSelector.SetColor(PreviousPathColor);
+            foreach (var step in Path) Tiles[step.TargetDelta].TileSelector.SetColor(PreviousPathColor);
 
             Tiles[BattleMap.PosToDelta(selectionTile.Origin)].TileSelector.SetColor(NextPathColor);
             
@@ -153,7 +117,7 @@ namespace CombatSystem.Entities
 
         private void SelectMoveWithSpeed(Vector2Int Position, int Moves)
         {
-            SelectionStackManager.AddLayer?.Invoke(new SelectionTile(
+            SelectionStackManager.AddLayer.Invoke(new SelectionTile(
                 Position, 
                 MovementFilter, 
                 Moves,
@@ -167,12 +131,58 @@ namespace CombatSystem.Entities
             Entity.NextTurnStep(position);
         }
 
-        private void GetPath(SelectionTile Selection, int delta)
+        private void DoPath(SelectionTile selection, Vector2Int position)
         {
-            var prev = Selection.PreviousVector[delta];
-            if (prev != delta)
-                GetPath(Selection, prev);
-            Path.Push(delta);
+            var delta = BattleMap.PosToDelta(position);
+            
+            if (selection.Filter.NeedPath)
+                GetPath(selection, delta);
+            else
+            {
+                Path.Push(new PathStep
+                {
+                    TargetDelta = delta,
+                    Cost = RemainingMoves,
+                    Choice = true
+                });
+                ActionBuffer.AddAction.Invoke(new ActionMovement(
+                    Entity,
+                    selection.Origin,
+                    position));
+                RemainingMoves = 0;
+            }
+        }
+
+        private void GetPath(SelectionTile selection, int delta)
+        {
+            void Recurse_GetPath(int _delta)
+            {
+                var prev = selection.PreviousVector[_delta];
+                var end = prev == _delta;
+                if (!end)
+                {
+                    Recurse_GetPath(prev);
+                    ActionBuffer.AddAction.Invoke(new ActionMovement(
+                        Entity,
+                        BattleMap.DeltaToPos(prev),
+                        BattleMap.DeltaToPos(_delta)));
+                }
+
+                Path.Push(new PathStep
+                {
+                    TargetDelta = _delta,
+                    Cost = 1,
+                    Choice = end
+                });
+                RemainingMoves--;
+            }
+
+            var prev = selection.PreviousVector[delta];
+            Recurse_GetPath(prev);
+            ActionBuffer.AddAction.Invoke(new ActionMovement(
+                Entity,
+                BattleMap.DeltaToPos(prev),
+                BattleMap.DeltaToPos(delta)));
         }
     }
 }
