@@ -27,7 +27,7 @@ namespace CombatSystem.Selection
         }
 
 
-        void OnLayerActive(SelectionLayer Layer)
+        private void OnLayerActive(SelectionLayer Layer)
         {
             if (Layer is SelectionAction Action)
                 ShowAction(Action);
@@ -62,18 +62,18 @@ namespace CombatSystem.Selection
                 ShowButton(Buttons[index], Action.Abilities[index]);
 
             for (; index < Buttons.Count; index++) 
-                Buttons[index].Hide();
+                HideButton(Buttons[index]);
         }
 
         private void ShowButton(AbilityButton button, Ability ability)
         {
-            button.transform.parent = VisibleButtonRoot;
+            button.transform.SetParent(VisibleButtonRoot);
             button.Initialize(ability);
         }
 
         private void HideButton(AbilityButton button)
         {
-            button.transform.parent = ButtonsRoot;
+            button.transform.SetParent(ButtonsRoot);
             button.Hide();
         }
 

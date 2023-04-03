@@ -4,36 +4,36 @@ using CombatSystem.Entities;
 using CombatSystem.Map;
 using UnityEngine;
 
-namespace CombatSystem
+namespace CombatSystem.Actions
 {
-    public class ActionMovement : Action
+    public class MapActionMovement : MapAction
     {
         private readonly CombatEntity entity;
         private Vector2Int position;
         private Vector2Int origin;
-        private bool teleport;
-        
-        public ActionMovement(CombatEntity entity, Vector2Int origin, Vector2Int  position, bool teleport = false)
+
+        public MapActionMovement(CombatEntity entity, Vector2Int origin, Vector2Int  position)
         {
             this.entity = entity;
             this.origin = origin;
             this.position = position;
-            this.teleport = teleport;
-        }
-        
-        public override void Preview()
-        {
-            BattleMap.MoveEntity.Invoke(entity, position);
         }
 
         public override void Apply()
         {
-            BattleMap.MoveEntity?.Invoke(entity, position);
+            BattleMap.MoveEntity.Invoke(entity, position);
         }
 
         public override void Cancel()
         {
             BattleMap.MoveEntity?.Invoke(entity, origin);
         }
+
+        public void CreateView(float Timer)
+        {
+            MapActionViewBuffer.AddActionView.Invoke(new MapActionViewMovement(Timer, entity, origin, position));
+        }
+
+        
     }
 }

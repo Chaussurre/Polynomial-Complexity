@@ -70,6 +70,12 @@ namespace CombatSystem.Map
             GetEntityTile(entity).AddCombatEntity(entity);
         }
 
+        public static void RemoveEntity(CombatEntity entity)
+        {
+            GetEntityTile(entity)?.RemoveCombatEntity();
+            ActiveMap.CombatEntities.Remove(entity);
+        }
+
         public static int CountEntity(Vector2Int position)
         {
             return ActiveMap.CombatEntities.Count(x => x.Value == position);

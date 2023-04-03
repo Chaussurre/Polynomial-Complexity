@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CombatSystem.Actions;
 using CombatSystem.Map;
 using CombatSystem.Selection;
 using TMPro;
@@ -15,6 +16,7 @@ namespace CombatSystem.Entities
         
         [SerializeField] private Color NextPathColor = Color.white;
         [SerializeField] private Color PreviousPathColor = Color.white;
+        [SerializeField] private float MoveTimePerTile = 2f;
 
         private CombatEntity Entity;
 
@@ -69,16 +71,19 @@ namespace CombatSystem.Entities
         {
             //popping Path until we reach the last position a choice has been made
             if(Path.Count == 0) return;
-            
+
+            var count = 0;
             bool end; 
             do
             {
                 var step = Path.Pop();
                 end = step.Choice;
                 RemainingMoves += step.Cost;
-                ActionBuffer.PopActions.Invoke(1);
-
+                count++;
+                
             } while (!end && Path.Count > 0);
+
+            MapActionBuffer.PopActions.Invoke(count);
         }
 
         private void OnHover(SelectionTile selectionTile, Vector2Int? Hovered)
@@ -145,11 +150,8 @@ namespace CombatSystem.Entities
                     Cost = RemainingMoves,
                     Choice = true
                 });
-                ActionBuffer.AddAction.Invoke(new ActionMovement(
-                    Entity,
-                    selection.Origin,
-                    position));
-                RemainingMoves = 0;
+                AddMoveAction(selection.Origin, position, true);
+                RemainingMoves = 0; 
             }
         }
 
@@ -162,10 +164,7 @@ namespace CombatSystem.Entities
                 if (!end)
                 {
                     Recurse_GetPath(prev);
-                    ActionBuffer.AddAction.Invoke(new ActionMovement(
-                        Entity,
-                        BattleMap.DeltaToPos(prev),
-                        BattleMap.DeltaToPos(_delta)));
+                    AddMoveAction(prev, _delta);
                 }
 
                 Path.Push(new PathStep
@@ -179,10 +178,20 @@ namespace CombatSystem.Entities
 
             var prev = selection.PreviousVector[delta];
             Recurse_GetPath(prev);
-            ActionBuffer.AddAction.Invoke(new ActionMovement(
-                Entity,
-                BattleMap.DeltaToPos(prev),
-                BattleMap.DeltaToPos(delta)));
+            AddMoveAction(prev, delta);
+        }
+
+        private void AddMoveAction(int from, int to, bool teleport = false)
+        {
+            AddMoveAction(BattleMap.DeltaToPos(from), BattleMap.DeltaToPos(to), teleport);
+        }
+
+        private void AddMoveAction(Vector2Int from, Vector2Int to, bool teleport = false)
+        {
+            var action = new MapActionMovement(Entity, from, to);
+            action.CreateView(teleport? 0: MoveTimePerTile);
+            
+            MapActionBuffer.AddAction.Invoke(action);
         }
     }
 }

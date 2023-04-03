@@ -121,10 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d443cc73ba2a59d4ea63cbe51e133bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementFilter: {fileID: 0}
-  Speed: 0
+  MovementFilter: {fileID: 11400000, guid: 79ec780d44bccac49a55d6447587a2a1, type: 2}
+  Speed: 8
   NextPathColor: {r: 0.32907715, g: 0.30566037, b: 1, a: 1}
   PreviousPathColor: {r: 0.55131507, g: 0.53755784, b: 0.9433962, a: 1}
+  MoveTimePerTile: 0.05
 --- !u!1001 &3499751301103711025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -135,7 +136,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5431252299408980101, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5431252299408980101, guid: 74891fafd7c749a4a907185c44bdddfe, type: 3}
       propertyPath: m_LocalPosition.x

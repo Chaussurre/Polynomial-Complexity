@@ -19,7 +19,6 @@ namespace CombatSystem.Map
         public void AddCombatEntity(CombatEntity entity)
         {
             TileView.CombatEntity = entity;
-            TileView.RefreshCombatEntity();
         }
 
         public void RemoveCombatEntity()

@@ -14,7 +14,8 @@ namespace CombatSystem.Map
         public SpriteRenderer BorderRenderer;
 
         [HideInInspector] public CombatEntity CombatEntity;
-        [Space]
+        private int CombatEntityOrder;
+        
         [SerializeField] private float TweenDuration;
         [SerializeField] private float TweenDelay;
         [SerializeField] private Ease TweenEase;
@@ -25,8 +26,6 @@ namespace CombatSystem.Map
         [Space]
         [SerializeField] private float EntityAlphaLower = 0.5f;
         private bool entityIsTransparent;
-
-        //private TweenerCore<Vector3, Vector3, VectorOptions> Tween = null;
 
         void Awake()
         {
@@ -39,6 +38,7 @@ namespace CombatSystem.Map
         {
             TopRenderer.sortingOrder = sortingOrder * 10;
             BorderRenderer.sortingOrder = sortingOrder * 10;
+            CombatEntityOrder = sortingOrder * 10 + 9;
         }
 
         public void ResetSizeAndColor()
@@ -58,8 +58,6 @@ namespace CombatSystem.Map
                 .OnUpdate(() =>
                 {
                     BorderRenderer.size = new Vector2(1, TopRenderer.transform.localPosition.y);
-
-                    RefreshCombatEntity();
                 });
         }
 
@@ -87,17 +85,26 @@ namespace CombatSystem.Map
         {
             if (CombatEntity)
             {
-                CombatEntity.transform.position = TopRenderer.transform.position;
-                CombatEntity.View.SetOrdering(TopRenderer.sortingOrder + 9);
+                CombatEntity.View.SetPosition(GetCombatEntityEmplacement());
+                CombatEntity.View.SetOrdering(CombatEntityOrder);
                 
                 CombatEntity.View.SetAlpha(entityIsTransparent ? EntityAlphaLower : 1f);
             }
         }
 
+        public Vector3 GetCombatEntityEmplacement()
+        {
+            return TopRenderer.transform.position;
+        }
+
+        public void SetCombatEntityAsAbove(CombatEntity combatEntity)
+        {
+            combatEntity.View.SetOrderingMinimum(CombatEntityOrder);
+        }
+
         public void SetTransparent(bool value)
         {
             entityIsTransparent = value;
-            RefreshCombatEntity();
         }
     }
 }

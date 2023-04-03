@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CombatSystem
+namespace CombatSystem.Actions
 {
-    public abstract class Action
+    public abstract class MapAction
     {
-        public abstract void Preview();
         public abstract void Apply();
         public abstract void Cancel();
     }
