@@ -63,7 +63,7 @@ namespace CombatSystem.Entities
             else
             {
                 DoPath(selectionTile, position);
-                SelectMoveWithSpeed(position, RemainingMoves);
+                SelectMoveWithSpeed(position, MovementFilter.AllowReChoice ? RemainingMoves : 0);
             }
         }
 
