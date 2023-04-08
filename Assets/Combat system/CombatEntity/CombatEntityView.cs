@@ -11,6 +11,8 @@ namespace CombatSystem.Entities
         [SerializeField] private List<SpriteRenderer> SpriteRenderers;
         private CombatEntity Entity;
 
+        public List<Animator> Animators;
+
         private void Start()
         {
             Entity = GetComponentInParent<CombatEntity>();

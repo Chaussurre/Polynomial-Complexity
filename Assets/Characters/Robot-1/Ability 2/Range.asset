@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eb706a3f3831594bb327633b5386cf9, type: 3}
-  m_Name: Movement Filter
+  m_Script: {fileID: 11500000, guid: 9d7c7b86f1ceea446ac3f2a95bffe28c, type: 3}
+  m_Name: Range
   m_EditorClassIdentifier: 
   CombatEntityFilter: 1
   EntityFilterOnlyBlock: 0
-  ContainItselfFilter: 1
-  NeedPath: 1
-  SquareZone: 0
+  ContainItselfFilter: 0
+  NeedPath: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,6 +12,14 @@ namespace CombatSystem.Map
         
         [SerializeField] private Vector2 TileSize;
         [SerializeField] private float Slope;
+        [SerializeField] private Transform entitiesParent;
+
+        public static Transform EntitiesParent { get; private set; }
+
+        private void Awake()
+        {
+            EntitiesParent = entitiesParent;
+        }
 
         public void Start()
         {

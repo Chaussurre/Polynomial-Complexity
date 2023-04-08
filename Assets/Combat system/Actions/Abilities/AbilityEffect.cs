@@ -11,5 +11,7 @@ namespace CombatSystem.Abilities
     public abstract class AbilityEffect<TAbility> : ScriptableObject where TAbility : Ability
     {
         public abstract void Cast(TAbility ability);
+
+        public abstract void Cancel();
     }
 }

@@ -13,5 +13,10 @@ namespace CombatSystem.Abilities
         {
             Debug.Log($"message : {message} ; position : {position}");
         }
+
+        public override void Cancel()
+        {
+            
+        }
     }
 }

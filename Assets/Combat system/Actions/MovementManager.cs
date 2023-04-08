@@ -17,7 +17,8 @@ namespace CombatSystem.Entities
         [SerializeField] private Color NextPathColor = Color.white;
         [SerializeField] private Color PreviousPathColor = Color.white;
         [SerializeField] private float MoveTimePerTile = 2f;
-
+        [SerializeField] private string AnimationTriggerName;
+        
         private CombatEntity Entity;
 
         private struct PathStep
@@ -189,7 +190,7 @@ namespace CombatSystem.Entities
         private void AddMoveAction(Vector2Int from, Vector2Int to, bool teleport = false)
         {
             var action = new MapActionMovement(Entity, from, to);
-            action.CreateView(teleport? 0: MoveTimePerTile);
+            action.CreateView(teleport? 0: MoveTimePerTile, AnimationTriggerName);
             
             MapActionBuffer.AddAction.Invoke(action);
         }

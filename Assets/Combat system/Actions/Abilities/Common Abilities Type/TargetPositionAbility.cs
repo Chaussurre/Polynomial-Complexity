@@ -18,15 +18,8 @@ namespace CombatSystem.Abilities
         [SerializeField] private int repeat = 1;
         
         [HideInInspector] public Vector2Int Origin;
-        [HideInInspector] public List<Vector2Int> Selections = new();
+        [HideInInspector] public Vector2Int LastSelected;
         private int repeatedCount;
-        
-        public override void Start()
-        {
-            base.Start();
-            for (int i = 0; i < repeat; i++)
-                Selections.Add(Vector2Int.zero);
-        }
 
         public override void Select(Vector2Int Position)
         {
@@ -48,19 +41,28 @@ namespace CombatSystem.Abilities
 
         private void OnSelect(SelectionTile selection, Vector2Int position)
         {
-            Selections[repeatedCount] = position;
+            LastSelected = position;
             repeatedCount++;
             
-            if (repeatedCount == repeat)
-                FinishedSelect(Origin);
-            else
+            FinishedSelect(Origin);
+            if (repeatedCount < repeat)
                 AddSelectionLayer();
+        }
+
+        public override void FinishedSelect(Vector2Int position)
+        {
+            Cast();
+            if (repeatedCount == repeat)
+                TurnManager.NextTurnStep.Invoke(position);
         }
 
         private void OnCancel(SelectionTile selection)
         {
             if (repeatedCount > 0)
+            {
                 repeatedCount--;
+                Effect.Cancel();
+            }
         }
 
         protected override void Cast()
@@ -80,16 +82,14 @@ namespace CombatSystem.Abilities
         public override void Cast(TargetPositionAbility ability)
         {
             if (Zone)
-                foreach (var position in ability.Selections
-                             .Select(selection => new SelectionTile(
-                                 selection,
+                foreach (var position in new SelectionTile(
+                                 ability.LastSelected,
                                  Zone,
-                                 ZoneSize))
-                             .SelectMany(zone => zone.Positions))
+                                 ZoneSize)
+                             .Positions)
                     ApplyEffect(position);
             else
-                foreach (var position in ability.Selections)
-                    ApplyEffect(position);
+                ApplyEffect(ability.LastSelected);
         }
 
         protected abstract void ApplyEffect(Vector2Int position);

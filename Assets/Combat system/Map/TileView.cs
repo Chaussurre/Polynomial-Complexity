@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CombatSystem.Entities;
@@ -27,6 +28,8 @@ namespace CombatSystem.Map
         [SerializeField] private float EntityAlphaLower = 0.5f;
         private bool entityIsTransparent;
 
+        private float CurrentSize;
+
         void Awake()
         {
             DefaultColor = TopRenderer.color;
@@ -49,6 +52,11 @@ namespace CombatSystem.Map
 
         public void SetSpriteSize(float size)
         {
+            if (Math.Abs(size - CurrentSize) < 0.01f)
+                return;
+            
+            CurrentSize = size;
+            
             TopRenderer.transform.DOKill();
             //var newTween = TopRenderer.transform
             TopRenderer.transform
@@ -97,9 +105,9 @@ namespace CombatSystem.Map
             return TopRenderer.transform.position;
         }
 
-        public void SetCombatEntityAsAbove(CombatEntity combatEntity)
+        public void SetCombatEntityAsAbove(CombatEntityView combatEntityView)
         {
-            combatEntity.View.SetOrderingMinimum(CombatEntityOrder);
+            combatEntityView.SetOrderingMinimum(CombatEntityOrder);
         }
 
         public void SetTransparent(bool value)

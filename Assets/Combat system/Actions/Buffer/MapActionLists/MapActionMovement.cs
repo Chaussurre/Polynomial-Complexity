@@ -29,9 +29,13 @@ namespace CombatSystem.Actions
             BattleMap.MoveEntity?.Invoke(entity, origin);
         }
 
-        public void CreateView(float Timer)
+        public void CreateView(float Timer, string ActionBoolName)
         {
-            MapActionViewBuffer.AddActionView.Invoke(new MapActionViewMovement(Timer, entity, origin, position));
+            MapActionViewBuffer.AddActionView.Invoke(new MapActionViewMovement(Timer,
+                ActionBoolName,
+                entity,
+                origin,
+                position));
         }
 
         

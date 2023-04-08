@@ -10,6 +10,7 @@ namespace CombatSystem.Actions
         #region Events
 
         public static UnityEvent<MapActionView> AddActionView = new();
+        public static UnityEvent ResetActionViews = new();
 
         #endregion
 
@@ -18,6 +19,19 @@ namespace CombatSystem.Actions
         private void Awake()
         {
             AddActionView.AddListener(AddAction);
+            ResetActionViews.AddListener(ResetActions);
+            
+            MapActionBuffer.PopActions.AddListener(ResetActions);
+        }
+
+        private void ResetActions(int _)
+        {
+            ResetActions();
+        }
+
+        private void ResetActions()
+        {
+            Views.Clear();
         }
 
         private void AddAction(MapActionView actionView)

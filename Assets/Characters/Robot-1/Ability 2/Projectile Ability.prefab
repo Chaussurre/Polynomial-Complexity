@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1065277283325081384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6492090678963254764}
+  - component: {fileID: 7287775330704870309}
+  m_Layer: 0
+  m_Name: Projectile Ability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6492090678963254764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065277283325081384}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7287775330704870309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065277283325081384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c073bd1e1a6e4494f80b731d9f2bbecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityName: Summon robot
+  Icon: {fileID: -3886304538469277687, guid: 27603874df1e45e43954c3237a46d2d4, type: 3}
+  Caster: {fileID: 0}
+  Range: {fileID: 11400000, guid: 57d4bd78c47cb17458d92e61ca736043, type: 2}
+  RangeSize: 0
+  Effect: {fileID: 11400000, guid: 92422a6f53c45014e9a4f7d5bc1b5bc9, type: 2}
+  repeat: 2
+  Origin: {x: 0, y: 0}
+  Selections: []
