@@ -20,6 +20,7 @@ namespace CombatSystem.Entities
         [SerializeField] private string AnimationTriggerName;
         
         private CombatEntity Entity;
+        private TurnAgent Owner;
 
         private struct PathStep
         {
@@ -32,16 +33,17 @@ namespace CombatSystem.Entities
 
         public override string ID => "Movement";
 
-        private void Start()
+        private void Awake()
         {
             Entity = GetComponentInParent<CombatEntity>();
+            Owner = GetComponentInParent<TurnAgent>();
         }
 
-        public override bool SelectAction(Vector2Int Position)
+        public override bool SelectAction()
         {
             if (RemainingMoves == 0) return false;
 
-            SelectMoveWithSpeed(Position, RemainingMoves);
+            SelectMoveWithSpeed(RemainingMoves);
 
             return true;
         }
@@ -60,11 +62,11 @@ namespace CombatSystem.Entities
         {
 
             if (position == selectionTile.Origin)
-                FinishMove(position);
+                FinishMove();
             else
             {
                 DoPath(selectionTile, position);
-                SelectMoveWithSpeed(position, MovementFilter.AllowReChoice ? RemainingMoves : 0);
+                SelectMoveWithSpeed(MovementFilter.AllowReChoice ? RemainingMoves : 0);
             }
         }
 
@@ -121,8 +123,10 @@ namespace CombatSystem.Entities
             } while (delta != prev);
         }
 
-        private void SelectMoveWithSpeed(Vector2Int Position, int Moves)
+        private void SelectMoveWithSpeed(int Moves)
         {
+            var Position = BattleMap.GetEntityPos(Entity);
+            
             SelectionStackManager.AddLayer.Invoke(new SelectionTile(
                 Position, 
                 MovementFilter, 
@@ -132,9 +136,9 @@ namespace CombatSystem.Entities
                 OnHover));
         }
 
-        private void FinishMove(Vector2Int position)
+        private void FinishMove()
         {
-            Entity.NextTurnStep(position);
+            Owner.NextTurnStep();
         }
 
         private void DoPath(SelectionTile selection, Vector2Int position)

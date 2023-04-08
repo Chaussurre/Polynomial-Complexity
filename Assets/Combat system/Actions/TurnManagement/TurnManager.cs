@@ -24,9 +24,13 @@ namespace CombatSystem.Entities
     {
         #region Events
 
-        public static UnityEvent<CombatEntity> StartEntityTurn = new();
-        public static UnityEvent<Vector2Int> NextTurnStep = new();
+        public static UnityEvent<TurnAgent> StartAgentTurn = new();
+        public static UnityEvent NextTurnStep = new();
         public static UnityEvent OnEndTurn = new();
+
+        public static UnityEvent<TurnAgent> AddAgent = new();
+        public static UnityEvent<TurnAgent> RemoveAgent = new();
+        
 
         #endregion
 
@@ -35,28 +39,28 @@ namespace CombatSystem.Entities
         [SerializeField] private List<TurnStep> Steps = new();
 
         private TurnStepSelectionLayer turnStepSelectionLayer;
-        private CombatEntity CurrentEntity;
+        private TurnAgent CurrentTurnAgent;
         private int currentStep;
         
         private void Awake()
         {
-            StartEntityTurn.AddListener(StartTurn);
+            StartAgentTurn.AddListener(StartTurn);
             NextTurnStep.AddListener(NextStep);
             SelectionStackManager.OnCancel.AddListener(OnCancelTurnStep);
 
             turnStepSelectionLayer = new();
         }
 
-        private void StartTurn(CombatEntity entity)
+        private void StartTurn(TurnAgent turnAgent)
         {
             currentStep = -1;
-            CurrentEntity = entity;
-            NextStep(BattleMap.GetEntityPos(entity));
+            CurrentTurnAgent = turnAgent;
+            NextStep();
         }
 
-        private void NextStep(Vector2Int position)
+        private void NextStep()
         {
-            if (!CurrentEntity) return;
+            if (!CurrentTurnAgent) return;
 
             SelectionStackManager.AddLayer.Invoke(turnStepSelectionLayer);
 
@@ -72,8 +76,8 @@ namespace CombatSystem.Entities
                 var step = Steps[currentStep];
 
                 if (step.ResetOnStep)
-                    CurrentEntity.ResetActionManager(step.StepId);
-                if(CurrentEntity.DoAction(position, step.StepId))
+                    CurrentTurnAgent.ResetActionManager(step.StepId);
+                if(CurrentTurnAgent.DoAction(step.StepId))
                     break;
             }
         }
@@ -92,18 +96,18 @@ namespace CombatSystem.Entities
 
             if (!AllowUnselect)
             {
-                StartTurn(CurrentEntity);
+                StartTurn(CurrentTurnAgent);
                 return;
             }
             
-            CurrentEntity = null;
+            CurrentTurnAgent = null;
             SelectionStackManager.ClearStack.Invoke();
         }
         
         private void EndTurn()
         {
-            CurrentEntity.EndTurn();
-            CurrentEntity = null;
+            CurrentTurnAgent.EndTurn();
+            CurrentTurnAgent = null;
             SelectionStackManager.ClearStack.Invoke();
             OnEndTurn.Invoke();
         }

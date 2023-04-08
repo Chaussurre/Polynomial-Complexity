@@ -44,16 +44,16 @@ namespace CombatSystem.Abilities
             LastSelected = position;
             repeatedCount++;
             
-            FinishedSelect(Origin);
+            FinishedSelect();
             if (repeatedCount < repeat)
                 AddSelectionLayer();
         }
 
-        public override void FinishedSelect(Vector2Int position)
+        public override void FinishedSelect()
         {
             Cast();
             if (repeatedCount == repeat)
-                TurnManager.NextTurnStep.Invoke(position);
+                TurnManager.NextTurnStep.Invoke();
         }
 
         private void OnCancel(SelectionTile selection)

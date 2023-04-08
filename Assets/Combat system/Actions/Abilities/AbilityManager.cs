@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CombatSystem.Entities;
+using CombatSystem.Map;
 using CombatSystem.Selection;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace CombatSystem.Abilities
     public class AbilityManager : ActionManager
     {
         private CombatEntity Entity;
+        private TurnAgent Owner;
 
         public List<Ability> Abilities;
 
@@ -16,9 +18,11 @@ namespace CombatSystem.Abilities
 
         public override string ID => "Abilities";
 
-        private void Start()
+        private void Awake()
         {
             Entity = GetComponentInParent<CombatEntity>();
+            Owner = GetComponentInParent<TurnAgent>();
+            
             SelectionAction = new SelectionAction(
                 Abilities,
                 Entity,
@@ -28,12 +32,12 @@ namespace CombatSystem.Abilities
                 null);//todo
         }
 
-        public override bool SelectAction(Vector2Int Origin)
+        public override bool SelectAction()
         {
             if (Abilities.Count == 0)
                 return false;
 
-            SelectionAction.Origin = Origin;
+            SelectionAction.Origin = BattleMap.GetEntityPos(Entity);
 
             SelectionStackManager.AddLayer?.Invoke(SelectionAction);
 

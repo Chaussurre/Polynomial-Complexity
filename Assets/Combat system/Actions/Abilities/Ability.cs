@@ -9,19 +9,19 @@ namespace CombatSystem.Abilities
         public string AbilityName = "Ability";
         public Sprite Icon;
             
-        [HideInInspector] public CombatEntity Caster;
+        [HideInInspector] public TurnAgent Owner;
         
         public virtual void Start()
         {
-            Caster = GetComponentInParent<CombatEntity>();
+            Owner = GetComponentInParent<TurnAgent>();
         }
 
         public abstract void Select(Vector2Int Position);
         
-        public virtual void FinishedSelect(Vector2Int position)
+        public virtual void FinishedSelect()
         {
             Cast();
-            Caster.NextTurnStep(position);
+            Owner.NextTurnStep();
         }
 
         protected abstract void Cast();
